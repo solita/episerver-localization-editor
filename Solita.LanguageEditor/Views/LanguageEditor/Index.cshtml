@@ -1,0 +1,91 @@
+﻿@inherits WebViewPage<Solita.LanguageEditor.Models.LanguageEditorViewModel>
+
+@using System.Web.Mvc.Html
+@using System.Web.Mvc
+@using System.Globalization
+
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+
+<style type="text/css">
+    .defaultvalue {
+        display: none;
+    }
+</style>
+
+@using(Html.BeginForm(new { Action = "Save"})) {
+    <table>
+        <tr>
+            <th></th>
+            @foreach(var lang in Model.Languages)
+            {
+                <th data-key="@lang">
+                    @CultureInfo.GetCultureInfo(lang).DisplayName
+                    <input type="submit" value="Column Defaults" class="defaults-column" />
+                </th>
+            }
+        </tr>
+        
+        
+        @for (var i = 0; i < Model.Translations.Count; i++)
+        {
+            <tr>
+                @Html.HiddenFor(m => m.Translations[i].Key)
+                @Html.HiddenFor(m => m.Translations[i].Description)
+                <td>@Model.Translations[i].Description</td>
+
+                @foreach (var lang in Model.Languages)
+                {
+                    <td data-key="@lang">
+                        @Html.TextBoxFor(m => m.Translations[i].Translations[lang], new {@class = "translation-input"})
+                        <input type="submit" value="Defaults" class="defaults-cell" />
+                    </td>
+                }
+                
+                <td><input type="submit" value="Row Defaults" class="defaults-row" /></td>
+                
+                <td class="defaultvalue">@Model.Translations[i].DefaultValue</td>
+            </tr>
+        }
+        
+    </table>
+    
+    <input type="submit" value="Save" />       
+}
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $(".defaults-cell").click(function () {
+            var translationInput = $(this).siblings(".translation-input")[0];
+            SetDefaultValue(translationInput);
+
+            return false;
+        });
+
+        $(".defaults-column").click(function () {
+            var key = $(this).parent().data("key");
+            var translationInputs = $("td[data-key='" + key + "']").children(".translation-input");
+            for (var i = 0; i < translationInputs.length; i++) {
+                SetDefaultValue(translationInputs[i]);
+            }
+
+            return false;
+        });
+
+        $(".defaults-row").click(function () {
+            var translationInputs = $(this).parent().siblings().children(".translation-input");
+            for (var i = 0; i < translationInputs.length; i++) {
+                SetDefaultValue(translationInputs[i]);
+            }
+
+            return false;
+        });
+    });
+
+    function SetDefaultValue(translationInput) {
+        var defaultValue = $(translationInput).parent().siblings(".defaultvalue")[0].textContent;
+        translationInput.value = defaultValue;
+    }
+</script>
+
