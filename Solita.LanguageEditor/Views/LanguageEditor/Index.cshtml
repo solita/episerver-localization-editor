@@ -1,8 +1,10 @@
-﻿@inherits WebViewPage<Solita.LanguageEditor.Models.LanguageEditorViewModel>
-
+﻿@using System.Globalization
 @using System.Web.Mvc.Html
-@using System.Web.Mvc
-@using System.Globalization
+@using EPiServer.Shell.Navigation
+@using EPiServer.Shell.Web.Mvc.Html
+
+@inherits System.Web.Mvc.WebViewPage<Solita.LanguageEditor.Models.LanguageEditorViewModel>
+
 
 
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
@@ -14,6 +16,9 @@
 </style>
 
 @using(Html.BeginForm(new { Action = "Save"})) {
+
+
+
     <table>
         <tr>
             <th></th>
@@ -26,14 +31,22 @@
             }
         </tr>
         
-        
-        @for (var i = 0; i < Model.Translations.Count; i++)
+        @{ var category = ""; }
+        @for (var i = 0; i < Model.Translations.OrderBy(s => s.Category).Count(); i++)
         {
+                if (category != Model.Translations[i].Category)
+                {
+                    <tr><td><strong>@Model.Translations[i].Category</strong></td></tr>
+                }
+                category = Model.Translations[i].Category; 
+                
+                
             <tr>
+
                 @Html.HiddenFor(m => m.Translations[i].Key)
                 @Html.HiddenFor(m => m.Translations[i].Description)
                 <td>@Model.Translations[i].Description</td>
-
+                
                 @foreach (var lang in Model.Languages)
                 {
                     <td data-key="@lang">
