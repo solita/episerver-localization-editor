@@ -1,11 +1,11 @@
 ﻿using System.Web.Mvc;
-using EPiServer.Shell;
 using EPiServer.Shell.Navigation;
+using Solita.LanguageEditor.Common;
 using Solita.LanguageEditor.Models;
 
 namespace Solita.LanguageEditor.Controllers
 {
-//    [Authorize(Roles = "LanguageEditors")]
+    [Authorize]
     public class LanguageEditorController : Controller
     {
         private readonly LocalizationPersister _persister;
@@ -19,7 +19,7 @@ namespace Solita.LanguageEditor.Controllers
         public ActionResult Index()
         {
             // For some reason EPiServer's add-on system doesn't check for .cshtml files, so the view path needs to be set manually
-            var viewPath = Paths.ToResource(GetType(), "Views/LanguageEditor/Index.cshtml");
+            var viewPath = ModuleUtil.PathTo("Views/LanguageEditor/Index.cshtml");
             return View(viewPath, _persister.GetLocalizations());
             
             //return View("Index", _persister.GetLocalizations());

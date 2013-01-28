@@ -40,6 +40,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Common\ModuleUtil.cs" />
     <Compile Include="Models\LanguageEditorViewModel.cs" />
     <Compile Include="Controllers\LanguageEditorController.cs" />
     <Compile Include="LocalizationPersister.cs" />
@@ -87,7 +88,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\LanguageEditor\Index.aspx" />
+    <Content Include="static\img\arrow_down.png" />
+    <Content Include="static\img\arrow_in.png" />
+    <Content Include="static\img\arrow_right.png" />
     <Content Include="Views\LanguageEditor\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
@@ -101,6 +104,9 @@
       <Name>Solita.LanguageEditor.Definitions</Name>
       <Private>True</Private>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Web.config" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
