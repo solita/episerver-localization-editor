@@ -1,5 +1,7 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
+using System.Web;
 using EPiServer.Framework;
 using EPiServer.Framework.Initialization;
 using EPiServer.Framework.Localization;
@@ -35,6 +37,15 @@ namespace Solita.LanguageEditor.UI
             }
 
             var localizationProviderInitializer = new VirtualPathXmlLocalizationProviderInitializer(GenericHostingEnvironment.VirtualPathProvider);
+
+            // Due to what is likely bug in Episerver, there needs to be a physical path with the same
+            // name as the virtual path, or else GetInitializedProvider fails since it can't listen to changes in a network folder.
+            var physicalDirectory = HttpContext.Current.Server.MapPath(langFolderVirtualPath);
+            if (!Directory.Exists(physicalDirectory))
+            {
+                Directory.CreateDirectory(physicalDirectory);
+            }
+            
             //a VPP with the path below must be registered in the sites configuration.
             var localizationProvider = localizationProviderInitializer.GetInitializedProvider(langFolderVirtualPath, ProviderName);
             //Inserts the provider first in the provider list so that it is prioritized over default providers.
