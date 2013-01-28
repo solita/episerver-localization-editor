@@ -3,9 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Solita.LanguageEditor.Definitions", "Solita.LanguageEditor.Definitions\Solita.LanguageEditor.Definitions.csproj", "{36C4D264-3A0C-4D58-8DC7-C858A8C4E37F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Solita.LanguageEditor", "Solita.LanguageEditor\Solita.LanguageEditor.csproj", "{ABDC9063-F9DB-438D-AC87-70935AD61452}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{8EC14A8A-1CB8-4060-AB79-C8607D97AFD5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Solita.LanguageEditor.UI", "Solita.LanguageEditor.UI\Solita.LanguageEditor.UI.csproj", "{ABDC9063-F9DB-438D-AC87-70935AD61452}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

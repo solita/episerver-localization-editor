@@ -1,9 +1,9 @@
 ﻿using System.Web.Mvc;
 using EPiServer.Shell.Navigation;
-using Solita.LanguageEditor.Common;
-using Solita.LanguageEditor.Models;
+using Solita.LanguageEditor.UI.Common;
+using Solita.LanguageEditor.UI.Models;
 
-namespace Solita.LanguageEditor.Controllers
+namespace Solita.LanguageEditor.UI.Controllers
 {
     [Authorize]
     public class LanguageEditorController : Controller

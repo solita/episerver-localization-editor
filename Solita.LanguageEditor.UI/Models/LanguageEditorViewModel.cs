@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Solita.LanguageEditor.Models
+namespace Solita.LanguageEditor.UI.Models
 {
     public class LanguageEditorViewModel
     {

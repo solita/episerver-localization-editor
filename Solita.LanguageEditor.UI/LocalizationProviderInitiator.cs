@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Linq;
-using System.Web.Mvc;
 using EPiServer.Framework;
 using EPiServer.Framework.Initialization;
 using EPiServer.Framework.Localization;
 using EPiServer.Framework.Localization.XmlResources;
 using EPiServer.Web.Hosting;
-using Solita.LanguageEditor.Common;
+using Solita.LanguageEditor.UI.Common;
 
-namespace Solita.LanguageEditor
+namespace Solita.LanguageEditor.UI
 {
     [InitializableModule]
     //A dependency to EPiServer CMS initialization is needed to be able to use a VPP

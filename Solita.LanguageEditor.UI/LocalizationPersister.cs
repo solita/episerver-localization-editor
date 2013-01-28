@@ -10,11 +10,11 @@ using System.Xml;
 using EPiServer.DataAbstraction;
 using EPiServer.ServiceLocation;
 using EPiServer.Web.Hosting;
-using Solita.LanguageEditor.Common;
 using Solita.LanguageEditor.Definitions;
-using Solita.LanguageEditor.Models;
+using Solita.LanguageEditor.UI.Common;
+using Solita.LanguageEditor.UI.Models;
 
-namespace Solita.LanguageEditor
+namespace Solita.LanguageEditor.UI
 {
     public class LocalizationPersister
     {

@@ -1,7 +1,7 @@
 ﻿using System.Web.UI.WebControls;
 using EPiServer.PlugIn;
 
-namespace Solita.LanguageEditor.Common
+namespace Solita.LanguageEditor.UI.Common
 {
     [GuiPlugIn]
     public class Settings

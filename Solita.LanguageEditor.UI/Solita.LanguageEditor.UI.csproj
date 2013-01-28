@@ -11,8 +11,8 @@
     <ProjectTypeGuids>{E3E379DF-F4C6-4180-9B81-6769533ABE47};{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Solita.LanguageEditor</RootNamespace>
-    <AssemblyName>Solita.LanguageEditor</AssemblyName>
+    <RootNamespace>Solita.LanguageEditor.UI</RootNamespace>
+    <AssemblyName>Solita.LanguageEditor.UI</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
@@ -108,6 +108,7 @@
   <ItemGroup>
     <Content Include="Views\Web.config" />
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
@@ -143,6 +144,6 @@
   <Target Name="AfterBuild" DependsOnTargets="CreateAddOnPackage; ">
   </Target>
   <Target Name="CreateAddOnPackage">
-    <Exec Command="nuget pack $(MSBuildProjectFile) -OutputDirectory $(OutputPath)..\NuGet\" />
+    <Exec Command="nuget pack $(MSBuildProjectFile) -OutputDirectory $(OutputPath)..\obj\" />
   </Target>
 </Project>

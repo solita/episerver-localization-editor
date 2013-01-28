@@ -1,7 +1,7 @@
 ﻿using EPiServer.Shell;
-using Solita.LanguageEditor.Controllers;
+using Solita.LanguageEditor.UI.Controllers;
 
-namespace Solita.LanguageEditor.Common
+namespace Solita.LanguageEditor.UI.Common
 {
     public static class ModuleUtil
     {

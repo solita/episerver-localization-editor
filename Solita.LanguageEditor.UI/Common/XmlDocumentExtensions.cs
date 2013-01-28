@@ -5,7 +5,7 @@ using System.Xml;
  * Slightly modiefied version of http://stackoverflow.com/a/509340
  */
 
-namespace Solita.LanguageEditor.Common
+namespace Solita.LanguageEditor.UI.Common
 {
     public static class XmlDocumentExtensions
     {
