@@ -144,6 +144,6 @@
   <Target Name="AfterBuild" DependsOnTargets="CreateAddOnPackage; ">
   </Target>
   <Target Name="CreateAddOnPackage">
-    <Exec Command="nuget pack $(MSBuildProjectFile) -OutputDirectory $(OutputPath)..\obj\" />
+    <Exec Command="nuget pack $(MSBuildProjectFile) -OutputDirectory $(OutputPath)..\Releases\" />
   </Target>
 </Project>
