@@ -66,33 +66,30 @@
                             }
                         </tr>
         
-                        @{ var category = ""; }
-                        @for (var i = 0; i < Model.Translations.OrderBy(s => s.Category).Count(); i++)
+                        @for (var iCat = 0; iCat < Model.Categories.Count(); iCat++)
                         {
-                            if (category != Model.Translations[i].Category)
+                            <tr><td class="category"><strong>@Model.Categories[iCat].Name</strong></td></tr>
+
+                            for (var iTrans = 0; iTrans < Model.Categories[iCat].Translations.Count(); iTrans++)
                             {
-                                <tr><td class="category"><strong>@Model.Translations[i].Category</strong></td></tr>
-                            }
-                            category = Model.Translations[i].Category; 
-                
-                
-                            <tr data-default="@Model.Translations[i].DefaultValue">
-                                <td>
-                                    @Html.HiddenFor(m => m.Translations[i].Key)
-                                    @Html.HiddenFor(m => m.Translations[i].Description)
-                                    @Model.Translations[i].Description
-                                </td>
-                
-                                <td><input type="image" src="@ModuleUtil.PathTo("/static/img/arrow_right.png")" title="Use default values for this row" class="defaults-row" alt="Use default values for this row" /></td>
-                
-                                @foreach (var lang in Model.Languages)
-                                {
-                                    <td data-key="@lang">
-                                        @Html.TextBoxFor(m => m.Translations[i].Translations[lang], new {@class = "translation-input"})
-                                        <input type="image" src="@ModuleUtil.PathTo("/static/img/arrow_in.png")" title="Use default value" class="defaults-cell" alt="Use default value" />
+                                <tr data-default="@Model.Categories[iCat].Translations[iTrans].DefaultValue">
+                                    <td>
+                                        @Html.HiddenFor(m => m.Categories[iCat].Translations[iTrans].Key)
+                                        @Html.HiddenFor(m => m.Categories[iCat].Translations[iTrans].Description)
+                                        @Model.Categories[iCat].Translations[iTrans].Description
                                     </td>
-                                }
-                            </tr>
+                
+                                    <td><input type="image" src="@ModuleUtil.PathTo("/static/img/arrow_right.png")" title="Use default values for this row" class="defaults-row" alt="Use default values for this row" /></td>
+                
+                                    @foreach (var lang in Model.Languages)
+                                    {
+                                        <td data-key="@lang">
+                                            @Html.TextBoxFor(m => m.Categories[iCat].Translations[iTrans].Translations[lang], new {@class = "translation-input"})
+                                            <input type="image" src="@ModuleUtil.PathTo("/static/img/arrow_in.png")" title="Use default value" class="defaults-cell" alt="Use default value" />
+                                        </td>
+                                    }
+                                </tr>
+                            }
                         }
         
                     </table>

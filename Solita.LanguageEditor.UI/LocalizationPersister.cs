@@ -42,28 +42,47 @@ namespace Solita.LanguageEditor.UI
 
             var model = new LanguageEditorViewModel { Languages = enabledLanguageIds };
 
-            foreach (var field in GetLocalizationFields())
+            foreach (var categoryType in GetCategoryTypes())
             {
-                var attribute = (LocalizationAttribute)Attribute.GetCustomAttribute(field, typeof(LocalizationAttribute));
-                var key = (string)field.GetValue(null);
-
-                var translation = model.AddTranslation(key, attribute.Description, attribute.Category, attribute.Order, attribute.DefaultValue);
-                foreach (var lang in model.Languages)
+                var categoryAttribute = GetAttribute<LocalizationCategoryAttribute>(categoryType);
+                
+                foreach (var field in GetLocalizationFields(categoryType))
                 {
-                    var value = FindExistingTranslation(xml, lang, key);
-                    translation.AddTranslation(lang, value ?? string.Empty);
+                    var attribute = GetAttribute<LocalizationAttribute>(field);
+                    var key = (string) field.GetValue(null);
+
+                    var translation = model.AddTranslation(key, attribute.Description, categoryAttribute.Name,
+                                                           attribute.DefaultValue);
+                    foreach (var lang in model.Languages)
+                    {
+                        var value = FindExistingTranslation(xml, lang, key);
+                        translation.AddTranslation(lang, value ?? string.Empty);
+                    }
                 }
             }
 
             return model;
         }
 
-        private static IEnumerable<FieldInfo> GetLocalizationFields()
+        private static IEnumerable<Type> GetCategoryTypes()
         {
             return from assembly in AppDomain.CurrentDomain.GetAssemblies()
                    from type in assembly.GetTypes()
-                   from field in type.GetFields(BindingFlags.Static | BindingFlags.Public)
-                   where field.GetCustomAttributes(typeof (LocalizationAttribute), true).Any()
+                   let attibute = GetAttribute<LocalizationCategoryAttribute>(type)
+                   where attibute != null
+                   orderby attibute.Order
+                   select type;
+        }
+
+        private static T GetAttribute<T>(MemberInfo type) where T:Attribute
+        {
+            return (T) Attribute.GetCustomAttribute(type, typeof (T));
+        }
+
+        private static IEnumerable<FieldInfo> GetLocalizationFields(IReflect type)
+        {
+            return from field in type.GetFields(BindingFlags.Static | BindingFlags.Public)
+                   where GetAttribute<LocalizationAttribute>(field) != null
                    select field;
         }
 
@@ -94,7 +113,7 @@ namespace Solita.LanguageEditor.UI
         public void SaveLocalizations(LanguageEditorViewModel model)
         {
             var xml = new XmlDocument();
-            foreach(var translation in model.Translations)
+            foreach(var translation in model.Categories.SelectMany(category => category.Translations))
             {
                 foreach (var dictionary in translation.Translations)
                 {

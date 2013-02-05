@@ -15,7 +15,7 @@
     <copyright>Copyright 2012</copyright>
     <tags>EPiServerModulePackage</tags>
     <dependencies>
-      <dependency id="Solita.LanguageEditor.Definitions" version="1.0.0.0" />
+      <dependency id="Solita.LanguageEditor.Definitions" version="1.1.0.0" />
     </dependencies>
   </metadata>
 </package>
