@@ -42,13 +42,13 @@ namespace Solita.LanguageEditor.UI
 
             var model = new LanguageEditorViewModel { Languages = enabledLanguageIds };
 
-            foreach (var categoryType in GetCategoryTypes())
+            foreach (var categoryType in DefinitionsHelpers.GetCategoryTypes())
             {
-                var categoryAttribute = GetAttribute<LocalizationCategoryAttribute>(categoryType);
+                var categoryAttribute = DefinitionsHelpers.GetAttribute<LocalizationCategoryAttribute>(categoryType);
                 
-                foreach (var field in GetLocalizationFields(categoryType))
+                foreach (var field in DefinitionsHelpers.GetLocalizationFields(categoryType))
                 {
-                    var attribute = GetAttribute<LocalizationAttribute>(field);
+                    var attribute = DefinitionsHelpers.GetAttribute<LocalizationAttribute>(field);
                     var key = (string) field.GetValue(null);
 
                     var translation = model.AddTranslation(key, attribute.Description, categoryAttribute.Name,
@@ -62,28 +62,6 @@ namespace Solita.LanguageEditor.UI
             }
 
             return model;
-        }
-
-        private static IEnumerable<Type> GetCategoryTypes()
-        {
-            return from assembly in AppDomain.CurrentDomain.GetAssemblies()
-                   from type in assembly.GetTypes()
-                   let attibute = GetAttribute<LocalizationCategoryAttribute>(type)
-                   where attibute != null
-                   orderby attibute.Order
-                   select type;
-        }
-
-        private static T GetAttribute<T>(MemberInfo type) where T:Attribute
-        {
-            return (T) Attribute.GetCustomAttribute(type, typeof (T));
-        }
-
-        private static IEnumerable<FieldInfo> GetLocalizationFields(IReflect type)
-        {
-            return from field in type.GetFields(BindingFlags.Static | BindingFlags.Public)
-                   where GetAttribute<LocalizationAttribute>(field) != null
-                   select field;
         }
 
         private static XmlDocument LoadXml(string filePath)
