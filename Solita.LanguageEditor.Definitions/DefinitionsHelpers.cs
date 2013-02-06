@@ -9,7 +9,10 @@ namespace Solita.LanguageEditor.Definitions
     {
         public static IEnumerable<Type> GetCategoryTypes()
         {
+            var attributeAssemblyName = typeof(LocalizationCategoryAttribute).Assembly.GetName().Name;
+
             return from assembly in AppDomain.CurrentDomain.GetAssemblies()
+                   where assembly.GetReferencedAssemblies().Any(a => a.Name == attributeAssemblyName)
                    from type in assembly.GetTypes()
                    let attribute = GetAttribute<LocalizationCategoryAttribute>(type)
                    where attribute != null
