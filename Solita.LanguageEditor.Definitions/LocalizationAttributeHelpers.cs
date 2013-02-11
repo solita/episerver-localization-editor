@@ -5,22 +5,22 @@ using System.Reflection;
 
 namespace Solita.LanguageEditor.Definitions
 {
-    public class LocalizationHelpers
+    public class LocalizationAttributeHelpers
     {
-        public static IEnumerable<Type> FindLocalizationCategoryTypes()
+        public static IEnumerable<Type> FindCategoryTypes()
         {
             var attributeAssemblyName = typeof(LocalizationCategoryAttribute).Assembly.GetName().Name;
 
             return from assembly in AppDomain.CurrentDomain.GetAssemblies()
                    where assembly.GetReferencedAssemblies().Any(a => a.Name == attributeAssemblyName)
                    from type in assembly.GetTypes()
-                   let attribute = GetLocalizationCategoryAttribute(type)
+                   let attribute = GetCategoryAttribute(type)
                    where attribute != null
                    orderby attribute.Order
                    select type;
         }
 
-        public static LocalizationCategoryAttribute GetLocalizationCategoryAttribute(Type type)
+        public static LocalizationCategoryAttribute GetCategoryAttribute(Type type)
         {
             return (LocalizationCategoryAttribute) Attribute.GetCustomAttribute(type, typeof(LocalizationCategoryAttribute));
         }
