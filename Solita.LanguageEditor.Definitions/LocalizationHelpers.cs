@@ -5,31 +5,36 @@ using System.Reflection;
 
 namespace Solita.LanguageEditor.Definitions
 {
-    public class DefinitionsHelpers
+    public class LocalizationHelpers
     {
-        public static IEnumerable<Type> GetCategoryTypes()
+        public static IEnumerable<Type> FindLocalizationCategoryTypes()
         {
             var attributeAssemblyName = typeof(LocalizationCategoryAttribute).Assembly.GetName().Name;
 
             return from assembly in AppDomain.CurrentDomain.GetAssemblies()
                    where assembly.GetReferencedAssemblies().Any(a => a.Name == attributeAssemblyName)
                    from type in assembly.GetTypes()
-                   let attribute = GetAttribute<LocalizationCategoryAttribute>(type)
+                   let attribute = GetLocalizationCategoryAttribute(type)
                    where attribute != null
                    orderby attribute.Order
                    select type;
         }
 
-        public static T GetAttribute<T>(MemberInfo type) where T : Attribute
+        public static LocalizationCategoryAttribute GetLocalizationCategoryAttribute(Type type)
         {
-            return (T) Attribute.GetCustomAttribute(type, typeof (T));
+            return (LocalizationCategoryAttribute) Attribute.GetCustomAttribute(type, typeof(LocalizationCategoryAttribute));
         }
 
-        public static IEnumerable<FieldInfo> GetLocalizationFields(IReflect type)
+        public static IEnumerable<FieldInfo> FindLocalizationFields(IReflect type)
         {
             return from field in type.GetFields(BindingFlags.Static | BindingFlags.Public)
-                   where GetAttribute<LocalizationAttribute>(field) != null
+                   where GetLocalizationAttribute(field) != null
                    select field;
+        }
+
+        public static LocalizationAttribute GetLocalizationAttribute(FieldInfo field)
+        {
+            return (LocalizationAttribute) Attribute.GetCustomAttribute(field, typeof(LocalizationAttribute));
         }
     }
 }

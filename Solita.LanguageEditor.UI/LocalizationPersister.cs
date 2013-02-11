@@ -42,13 +42,13 @@ namespace Solita.LanguageEditor.UI
 
             var model = new LanguageEditorViewModel { Languages = enabledLanguageIds };
 
-            foreach (var categoryType in DefinitionsHelpers.GetCategoryTypes())
+            foreach (var categoryType in LocalizationHelpers.FindLocalizationCategoryTypes())
             {
-                var categoryAttribute = DefinitionsHelpers.GetAttribute<LocalizationCategoryAttribute>(categoryType);
+                var categoryAttribute = LocalizationHelpers.GetLocalizationCategoryAttribute(categoryType);
                 
-                foreach (var field in DefinitionsHelpers.GetLocalizationFields(categoryType))
+                foreach (var field in LocalizationHelpers.FindLocalizationFields(categoryType))
                 {
-                    var attribute = DefinitionsHelpers.GetAttribute<LocalizationAttribute>(field);
+                    var attribute = LocalizationHelpers.GetLocalizationAttribute(field);
                     var key = (string) field.GetValue(null);
 
                     var translation = model.AddTranslation(key, attribute.Description, categoryAttribute.Name,
