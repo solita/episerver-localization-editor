@@ -6,4 +6,3 @@ syntax: glob
 *.suo
 */TestResults/*
 *.log
-*.nupkg
