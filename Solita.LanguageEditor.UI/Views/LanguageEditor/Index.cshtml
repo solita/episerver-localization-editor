@@ -4,6 +4,7 @@
 @using System.Web.Mvc.Html
 @using EPiServer.Framework.Web.Resources
 @using EPiServer.Shell.Navigation
+@using EPiServer.Shell.Web.Mvc.Html
 @using Solita.LanguageEditor.UI.Common
 
 
@@ -11,7 +12,7 @@
 
 <html>
     <head>
-        <title>Language editor</title>
+        <title>@Html.Translate("/languageeditor/title")</title>
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
 
         <style type="text/css">
@@ -61,7 +62,9 @@
                             {
                                 <th data-key="@lang">
                                     @CultureInfo.GetCultureInfo(lang).DisplayName
-                                    <input type="image" src="@ModuleUtil.PathTo("/static/img/arrow_down.png")" title="Use default values for this column" class="defaults-column" alt="Use default values for this column" />
+                                    <input type="image" src="@ModuleUtil.PathTo("/static/img/arrow_down.png")" class="defaults-column"    
+                                           title="@Html.Translate("/languageeditor/setcolumndefaults")" 
+                                           alt="@Html.Translate("/languageeditor/setcolumndefaults")" />
                                 </th>
                             }
                         </tr>
@@ -79,13 +82,19 @@
                                         @Model.Categories[iCat].Translations[iTrans].Description
                                     </td>
                 
-                                    <td><input type="image" src="@ModuleUtil.PathTo("/static/img/arrow_right.png")" title="Use default values for this row" class="defaults-row" alt="Use default values for this row" /></td>
+                                    <td>
+                                        <input type="image" src="@ModuleUtil.PathTo("/static/img/arrow_right.png")" class="defaults-row"
+                                               title="@Html.Translate("/languageeditor/setrowdefaults")" 
+                                               alt="@Html.Translate("/languageeditor/setrowdefaults")" />
+                                    </td>
                 
                                     @foreach (var lang in Model.Languages)
                                     {
                                         <td data-key="@lang">
                                             @Html.TextBoxFor(m => m.Categories[iCat].Translations[iTrans].Translations[lang], new {@class = "translation-input"})
-                                            <input type="image" src="@ModuleUtil.PathTo("/static/img/arrow_in.png")" title="Use default value" class="defaults-cell" alt="Use default value" />
+                                            <input type="image" src="@ModuleUtil.PathTo("/static/img/arrow_in.png")" class="defaults-cell" 
+                                                   title="@Html.Translate("/languageeditor/setdefault")"  
+                                                   alt="@Html.Translate("/languageeditor/setdefault")" />
                                         </td>
                                     }
                                 </tr>
@@ -94,7 +103,7 @@
         
                     </table>
     
-                    <input type="submit" value="Save" />       
+                    <input type="submit" value="@Html.Translate("/languageeditor/save")" />       
                 }
 
             </div>

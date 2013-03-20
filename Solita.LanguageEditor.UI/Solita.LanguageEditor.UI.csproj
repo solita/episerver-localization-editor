@@ -88,6 +88,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Lang\view.xml" />
     <Content Include="static\img\arrow_down.png" />
     <Content Include="static\img\arrow_in.png" />
     <Content Include="static\img\arrow_right.png" />
@@ -109,6 +110,7 @@
   <ItemGroup>
     <Content Include="Views\Web.config" />
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

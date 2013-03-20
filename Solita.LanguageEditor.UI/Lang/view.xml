@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<languages>
+  
+  <language id="en" name="English">
+    <languageeditor>
+      <title>Language editor</title>
+      <setcolumndefaults>Set default values for this column</setcolumndefaults>
+      <setrowdefaults>Set default values for this row</setrowdefaults>
+      <setdefault>Set default value</setdefault>
+      <save>Save</save>
+    </languageeditor>
+  </language>
+  
+  <language id="fi" name="Suomi">
+    <languageeditor>
+      <title>Käännöstyökalu</title>
+      <setcolumndefaults>Aseta sarakkeelle oletusarvot</setcolumndefaults>
+      <setrowdefaults>Aseta riville oletusarvot</setrowdefaults>
+      <setdefault>Aseta oletusarvo</setdefault>
+      <save>Tallenna</save>
+    </languageeditor>
+  </language>
+  
+</languages>
