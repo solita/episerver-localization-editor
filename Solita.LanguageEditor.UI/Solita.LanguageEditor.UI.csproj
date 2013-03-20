@@ -41,6 +41,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Common\ModuleUtil.cs" />
+    <Compile Include="Lang\CmsMenuTitleProvider.cs" />
     <Compile Include="Models\LanguageEditorViewModel.cs" />
     <Compile Include="Controllers\LanguageEditorController.cs" />
     <Compile Include="LocalizationPersister.cs" />
