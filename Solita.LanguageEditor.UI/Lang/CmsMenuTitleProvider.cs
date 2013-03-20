@@ -16,7 +16,7 @@ namespace Solita.LanguageEditor.UI.Lang {
             {
                 const string key = "/languageeditor/title";
                 var localizationService = ServiceLocator.Current.GetInstance<LocalizationService>();
-                var languageId = Thread.CurrentThread.CurrentCulture.TwoLetterISOLanguageName;
+                var languageId = Thread.CurrentThread.CurrentUICulture.TwoLetterISOLanguageName;
                 string value;
 
                 if (!localizationService.TryGetStringByCulture(key, new CultureInfo(languageId), out value))
