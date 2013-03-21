@@ -66,12 +66,12 @@ namespace Solita.LanguageEditor.UI
 
         private static XmlDocument LoadXml(string filePath)
         {
-            var file = (UnifiedFile) HostingEnvironment.VirtualPathProvider.GetFile(filePath);
-            if (file == null)
+            if (!HostingEnvironment.VirtualPathProvider.FileExists(filePath))
             {
                 return new XmlDocument();
             }
-
+            
+            var file = (UnifiedFile) HostingEnvironment.VirtualPathProvider.GetFile(filePath);
             using (var stream = file.Open(FileMode.Open, FileAccess.Read))
             {
                 var document = new XmlDocument();
