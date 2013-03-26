@@ -20,5 +20,10 @@ namespace Solita.LanguageEditor.UI.Common
             AdminControl = typeof (TextBox),
             AdminControlValue = "Text")]
         public string LangFolderVirtualPath { get; set; }
+
+        [PlugInProperty(Description = "Development mode",
+           AdminControl = typeof(CheckBox),
+           AdminControlValue = "Checked")]
+        public bool DevelopmentMode { get; set; }
     }
 }

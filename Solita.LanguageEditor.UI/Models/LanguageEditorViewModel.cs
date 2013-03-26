@@ -7,6 +7,7 @@ namespace Solita.LanguageEditor.UI.Models
     {
         public IList<string> Languages { get; set; }
         public IList<Category> Categories { get; set; }
+        public bool DevelopmentMode { get; set; }
         
         public LanguageEditorViewModel()
         {

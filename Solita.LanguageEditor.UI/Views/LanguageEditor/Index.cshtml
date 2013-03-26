@@ -14,7 +14,17 @@
     <head>
         <title>@Html.Translate("/languageeditor/title")</title>
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
-
+       
+        <!-- Shell -->
+        @Html.Raw(ClientResources.RenderResources("ShellCore"))
+        @Html.Raw(ClientResources.RenderResources("ShellWidgets"))
+        <!-- LightTheme -->
+        @Html.Raw(ClientResources.RenderResources("ShellCoreLightTheme"))
+        <!-- Navigation -->
+        @Html.Raw(ClientResources.RenderResources("Navigation"))
+        <!-- Dojo Dashboard -->
+        @Html.Raw(ClientResources.RenderResources("DojoDashboardCompatibility"))
+        
         <style type="text/css">
 
             .language-editor td {
@@ -32,18 +42,10 @@
             .language-editor table {
                 margin-bottom: 2em;
             }
-
+            .language-editor .value-modified {
+                background-color: lightgoldenrodyellow;
+            }
         </style>
-        
-        <!-- Shell -->
-        @Html.Raw(ClientResources.RenderResources("ShellCore"))
-        @Html.Raw(ClientResources.RenderResources("ShellWidgets"))
-        <!-- LightTheme -->
-        @Html.Raw(ClientResources.RenderResources("ShellCoreLightTheme"))
-        <!-- Navigation -->
-        @Html.Raw(ClientResources.RenderResources("Navigation"))
-        <!-- Dojo Dashboard -->
-        @Html.Raw(ClientResources.RenderResources("DojoDashboardCompatibility"))
     </head>
 
     <body>
@@ -62,9 +64,12 @@
                             {
                                 <th data-key="@lang">
                                     @CultureInfo.GetCultureInfo(lang).DisplayName
-                                    <input type="image" src="@ModuleUtil.PathTo("/static/img/arrow_down.png")" class="defaults-column"    
-                                           title="@Html.Translate("/languageeditor/setcolumndefaults")" 
-                                           alt="@Html.Translate("/languageeditor/setcolumndefaults")" />
+                                    @if (Model.DevelopmentMode)
+                                    {
+                                        <input type="image" src="@ModuleUtil.PathTo("/static/img/arrow_down.png")" class="defaults-column"    
+                                               title="@Html.Translate("/languageeditor/setcolumndefaults")" 
+                                               alt="@Html.Translate("/languageeditor/setcolumndefaults")" />
+                                    }
                                 </th>
                             }
                         </tr>
@@ -75,7 +80,7 @@
 
                             for (var iTrans = 0; iTrans < Model.Categories[iCat].Translations.Count(); iTrans++)
                             {
-                                <tr data-default="@Model.Categories[iCat].Translations[iTrans].DefaultValue">
+                                <tr data-default="@Model.Categories[iCat].Translations[iTrans].DefaultValue" class="translations-row">
                                     <td>
                                         @Html.HiddenFor(m => m.Categories[iCat].Translations[iTrans].Key)
                                         @Html.HiddenFor(m => m.Categories[iCat].Translations[iTrans].Description)
@@ -83,18 +88,28 @@
                                     </td>
                 
                                     <td>
-                                        <input type="image" src="@ModuleUtil.PathTo("/static/img/arrow_right.png")" class="defaults-row"
-                                               title="@Html.Translate("/languageeditor/setrowdefaults")" 
-                                               alt="@Html.Translate("/languageeditor/setrowdefaults")" />
+                                        @if (Model.DevelopmentMode)
+                                        {
+                                            <input type="image" src="@ModuleUtil.PathTo("/static/img/arrow_right.png")" class="defaults-row"
+                                                   title="@Html.Translate("/languageeditor/setrowdefaults")" 
+                                                   alt="@Html.Translate("/languageeditor/setrowdefaults")" />
+                                        }
                                     </td>
                 
                                     @foreach (var lang in Model.Languages)
                                     {
                                         <td data-key="@lang">
-                                            @Html.TextBoxFor(m => m.Categories[iCat].Translations[iTrans].Translations[lang], new {@class = "translation-input"})
-                                            <input type="image" src="@ModuleUtil.PathTo("/static/img/arrow_in.png")" class="defaults-cell" 
-                                                   title="@Html.Translate("/languageeditor/setdefault")"  
-                                                   alt="@Html.Translate("/languageeditor/setdefault")" />
+                                            @Html.TextBoxFor(m => m.Categories[iCat].Translations[iTrans].Translations[lang], new {@class = "translation-input", data_original = Model.Categories[iCat].Translations[iTrans].Translations[lang]})
+                                            <input type="image" src="@ModuleUtil.PathTo("/static/img/arrow_undo.png")"
+                                                   title="@Html.Translate("/languageeditor/undo")"
+                                                   alt="@Html.Translate("/languageeditor/undo")"
+                                                   class="undo-cell"  />
+                                            @if (Model.DevelopmentMode)
+                                            {
+                                                <input type="image" src="@ModuleUtil.PathTo("/static/img/arrow_in.png")" class="defaults-cell" 
+                                                       title="@Html.Translate("/languageeditor/setdefault")"  
+                                                       alt="@Html.Translate("/languageeditor/setdefault")" />
+                                            }
                                         </td>
                                     }
                                 </tr>
@@ -103,7 +118,8 @@
         
                     </table>
     
-                    <input type="submit" value="@Html.Translate("/languageeditor/save")" />       
+                    <input type="submit" value="@Html.Translate("/languageeditor/undoall")" class="undo-all" />
+                    <input type="submit" value="@Html.Translate("/languageeditor/save")" />
                 }
 
             </div>
@@ -112,6 +128,21 @@
         <script type="text/javascript">
 
             $(document).ready(function () {
+                $(".undo-cell").click(function () {
+                    var translationInput = $(this).siblings(".translation-input")[0];
+                    SetOriginalValue(translationInput);
+
+                    return false;
+                });
+                
+                $(".undo-all").click(function () {
+                    $(".translation-input").each(function() {
+                        SetOriginalValue($(this));
+                    });
+
+                    return false;
+                });
+                
                 $(".defaults-cell").click(function () {
                     var translationInput = $(this).siblings(".translation-input")[0];
                     SetDefaultValue(translationInput);
@@ -121,27 +152,49 @@
 
                 $(".defaults-column").click(function () {
                     var key = $(this).parent().data("key");
-                    var translationInputs = $("td[data-key='" + key + "']").children(".translation-input");
-                    for (var i = 0; i < translationInputs.length; i++) {
-                        SetDefaultValue(translationInputs[i]);
-                    }
-
+                    $("td[data-key='" + key + "']").find(".translation-input").each(function() {
+                        SetDefaultValue($(this));
+                    });
+                    
                     return false;
                 });
 
                 $(".defaults-row").click(function () {
-                    var translationInputs = $(this).parent().siblings().children(".translation-input");
-                    for (var i = 0; i < translationInputs.length; i++) {
-                        SetDefaultValue(translationInputs[i]);
-                    }
+                    $(this).closest(".translations-row").find(".translation-input").each(function () {
+                        SetDefaultValue($(this));
+                    });
 
                     return false;
                 });
+
+                $(".translation-input").change(function() {
+                    SetModifiedStatus($(this));
+                });
             });
 
+            function SetOriginalValue(translationInput) {
+                $(translationInput).val(GetOriginalValue(translationInput));
+                $(translationInput).change();
+            }
+            
+            function GetOriginalValue(translationInput) {
+                return $(translationInput).data("original");
+            }
+            
             function SetDefaultValue(translationInput) {
-                var defaultValue = $(translationInput).closest("tr").data("default");
-                translationInput.value = defaultValue;
+                $(translationInput).val(GetDefaultValue(translationInput));
+                $(translationInput).change();
+            }
+            
+            function GetDefaultValue(translationInput) {
+                return $(translationInput).closest(".translations-row").data("default");
+            }
+
+            function SetModifiedStatus(translationInput) {
+                translationInput.removeClass("value-modified");
+                if (translationInput.val() !== GetOriginalValue(translationInput)) {
+                    translationInput.addClass("value-modified");
+                }
             }
         </script>
 

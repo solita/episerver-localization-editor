@@ -8,6 +8,8 @@
       <setrowdefaults>Set default values for this row</setrowdefaults>
       <setdefault>Set default value</setdefault>
       <save>Save</save>
+      <undo>Undo changes</undo>
+      <undoall>Undo all changes</undoall>
     </languageeditor>
   </language>
   
@@ -18,6 +20,8 @@
       <setrowdefaults>Aseta riville oletusarvot</setrowdefaults>
       <setdefault>Aseta oletusarvo</setdefault>
       <save>Tallenna</save>
+      <undo>Peru muutokset</undo>
+      <undoall>Peru kaikki muutokset</undoall>
     </languageeditor>
   </language>
   
