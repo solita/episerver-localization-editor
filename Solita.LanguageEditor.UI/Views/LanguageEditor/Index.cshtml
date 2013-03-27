@@ -45,6 +45,16 @@
             .language-editor .value-modified {
                 background-color: lightgoldenrodyellow;
             }
+            .language-editor .value-new {
+                background-color: lightgreen;
+            }
+            .batch-translation-row input[type=image]{
+                vertical-align: top;
+            }
+            .translations-row input[type=text], .batch-translation-row textarea {
+                width: 200px;
+            }
+
         </style>
     </head>
 
@@ -115,9 +125,31 @@
                                 </tr>
                             }
                         }
-        
+                        
+                        @if (Model.DevelopmentMode)
+                        {
+                            <tr><td class="category"><strong>@Html.Translate("/languageeditor/batchtranslate")</strong></td></tr>
+                            <tr class="batch-translation-row">
+                                <td></td>
+                                <td></td>
+                                @foreach (var language in Model.Languages)
+                                {
+                                    <td class="batch-translation-cell" data-key="@language">
+                                        <textarea class="batch-translations"></textarea>
+                                        <input type="image" src="@ModuleUtil.PathTo("/static/img/arrow_down.png")" class="get-translations"    
+                                               title="@Html.Translate("/languageeditor/gettranslations")" 
+                                               alt="@Html.Translate("/languageeditor/gettranslations")" />
+                                    
+                                        <input type="image" src="@ModuleUtil.PathTo("/static/img/arrow_up.png")" class="set-translations"    
+                                               title="@Html.Translate("/languageeditor/settranslations")" 
+                                               alt="@Html.Translate("/languageeditor/settranslations")" />
+                                    </td>
+                                }
+                            </tr>
+                        }
+
                     </table>
-    
+                   
                     <input type="submit" value="@Html.Translate("/languageeditor/undoall")" class="undo-all" />
                     <input type="submit" value="@Html.Translate("/languageeditor/save")" />
                 }
@@ -128,32 +160,54 @@
         <script type="text/javascript">
 
             $(document).ready(function () {
+                $(".get-translations").click(function () {
+                    var key = $(this).closest(".batch-translation-cell").data("key");
+                    var translations = new Array();
+                    getInputsByLanguageKey(key).each(function() {
+                        translations.push($(this).val());
+                    });
+                    $(this).siblings(".batch-translations").val(translations.join("\n")).change();
+
+                    return false;
+                });
+
+                $(".set-translations").click(function () {
+                    var key = $(this).closest(".batch-translation-cell").data("key");
+                    var translations = $(this).siblings(".batch-translations").val().split(/[\r\n]/g);
+                    getInputsByLanguageKey(key).each(function (i) {
+                        $(this).val(translations[i]).change();
+                    });
+
+                    return false;
+                });
+                
+
                 $(".undo-cell").click(function () {
-                    var translationInput = $(this).siblings(".translation-input")[0];
-                    SetOriginalValue(translationInput);
+                    var translationInput = $(this).siblings(".translation-input:first");
+                    setOriginalValue(translationInput);
 
                     return false;
                 });
                 
                 $(".undo-all").click(function () {
                     $(".translation-input").each(function() {
-                        SetOriginalValue($(this));
+                        setOriginalValue($(this));
                     });
 
                     return false;
                 });
                 
                 $(".defaults-cell").click(function () {
-                    var translationInput = $(this).siblings(".translation-input")[0];
-                    SetDefaultValue(translationInput);
+                    var translationInput = $(this).siblings(".translation-input:first");
+                    setDefaultValue(translationInput);
 
                     return false;
                 });
 
                 $(".defaults-column").click(function () {
                     var key = $(this).parent().data("key");
-                    $("td[data-key='" + key + "']").find(".translation-input").each(function() {
-                        SetDefaultValue($(this));
+                    getInputsByLanguageKey(key).each(function() {
+                        setDefaultValue($(this));
                     });
                     
                     return false;
@@ -161,39 +215,47 @@
 
                 $(".defaults-row").click(function () {
                     $(this).closest(".translations-row").find(".translation-input").each(function () {
-                        SetDefaultValue($(this));
+                        setDefaultValue($(this));
                     });
 
                     return false;
                 });
 
                 $(".translation-input").change(function() {
-                    SetModifiedStatus($(this));
+                    setModifiedStatus($(this));
                 });
             });
 
-            function SetOriginalValue(translationInput) {
-                $(translationInput).val(GetOriginalValue(translationInput));
-                $(translationInput).change();
+            function getInputsByLanguageKey(key) {
+                return $("td[data-key='" + key + "']").find(".translation-input");
+            }
+
+            function setOriginalValue(translationInput) {
+                $(translationInput).val(getOriginalValue(translationInput)).change();
             }
             
-            function GetOriginalValue(translationInput) {
+            function getOriginalValue(translationInput) {
                 return $(translationInput).data("original");
             }
             
-            function SetDefaultValue(translationInput) {
-                $(translationInput).val(GetDefaultValue(translationInput));
-                $(translationInput).change();
+            function setDefaultValue(translationInput) {
+                $(translationInput).val(getDefaultValue(translationInput)).change();
             }
             
-            function GetDefaultValue(translationInput) {
+            function getDefaultValue(translationInput) {
                 return $(translationInput).closest(".translations-row").data("default");
             }
 
-            function SetModifiedStatus(translationInput) {
+            function setModifiedStatus(translationInput) {
                 translationInput.removeClass("value-modified");
-                if (translationInput.val() !== GetOriginalValue(translationInput)) {
-                    translationInput.addClass("value-modified");
+                translationInput.removeClass("value-new");
+                var originalValue = getOriginalValue(translationInput);
+                if (translationInput.val() !== originalValue) {
+                    if (originalValue == "") {
+                        translationInput.addClass("value-new");
+                    } else {
+                        translationInput.addClass("value-modified");
+                    }
                 }
             }
         </script>

@@ -10,6 +10,9 @@
       <save>Save</save>
       <undo>Undo changes</undo>
       <undoall>Undo all changes</undoall>
+      <gettranslations>Get translations</gettranslations>
+      <settranslations>Set translations</settranslations>
+      <batchtranslate>Batch translate</batchtranslate>
     </languageeditor>
   </language>
   
@@ -22,6 +25,9 @@
       <save>Tallenna</save>
       <undo>Peru muutokset</undo>
       <undoall>Peru kaikki muutokset</undoall>
+      <gettranslations>Hae käännökset</gettranslations>
+      <settranslations>Aseta käännökset</settranslations>
+      <batchtranslate>Käännä kaikki</batchtranslate>
     </languageeditor>
   </language>
   
