@@ -38,6 +38,8 @@
     <Compile Include="LocalizationAttributeHelpers.cs" />
     <Compile Include="LocalizationCategoryAttribute.cs" />
     <Compile Include="LocalizationAttribute.cs" />
+    <Compile Include="LocalizationDefinition.cs" />
+    <Compile Include="LocalizationHelpers.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

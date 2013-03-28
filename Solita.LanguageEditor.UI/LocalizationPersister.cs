@@ -30,48 +30,86 @@ namespace Solita.LanguageEditor.UI
             _translationFilePath = VirtualPathUtility.Combine(folderPath, TranslationFile);
         }
 
-        public LanguageEditorViewModel GetLocalizations()
+        public IList<string> GetEnabledLanguages()
         {
-            var xml = LoadXml(_translationFilePath);
-
-            var enabledLanguageIds =
-                ServiceLocator.Current.GetInstance<ILanguageBranchRepository>()
+            return ServiceLocator.Current.GetInstance<ILanguageBranchRepository>()
                               .ListEnabled()
                               .Select(branch => branch.LanguageID)
                               .ToList();
+        }
 
-            var model = new LanguageEditorViewModel { Languages = enabledLanguageIds };
-
-            foreach (var categoryType in LocalizationAttributeHelpers.FindCategoryTypes())
+        public CategoryList GetLocalizations()
+        {
+            var xml = LoadXml(_translationFilePath);
+            var languages = GetEnabledLanguages();
+            var categories = new CategoryList();
+              
+            foreach (var localization in LocalizationHelpers.GetLocalizationDefinitions())
             {
-                var categoryAttribute = LocalizationAttributeHelpers.GetCategoryAttribute(categoryType);
-                
-                foreach (var field in LocalizationAttributeHelpers.FindLocalizationFields(categoryType))
-                {
-                    var attribute = LocalizationAttributeHelpers.GetLocalizationAttribute(field);
-                    var key = (string) field.GetValue(null);
+                var translation = categories.AddTranslation(
+                    localization.Key, localization.Description, localization.Category, localization.DefaultValue);
 
-                    var translation = model.AddTranslation(key, attribute.Description, categoryAttribute.Name,
-                                                           attribute.DefaultValue);
-                    foreach (var lang in model.Languages)
-                    {
-                        var value = FindExistingTranslation(xml, lang, key);
-                        translation.AddTranslation(lang, value ?? string.Empty);
-                    }
+                foreach (var lang in languages)
+                {
+                    var value = FindExistingTranslation(xml, lang, translation.Key);
+                    translation.AddTranslation(lang, value ?? string.Empty);
                 }
             }
 
-            return model;
+            return categories;
+        }
+
+        public object GetJsonLocalizations(string language, string version)
+        {
+            var xml = LoadXml(_translationFilePath, version);
+
+            var translations = LocalizationHelpers.GetLocalizationDefinitions().Select(d => new
+                {
+                    key = d.Key,
+                    translation = FindExistingTranslation(xml, language, d.Key)
+                });
+                       
+
+            return new {language, translations};
+        }
+
+        public IList<XmlVersionInfo> GetTranslationFileVersions()
+        {
+            var versions = new List<XmlVersionInfo>();
+            if (HostingEnvironment.VirtualPathProvider.FileExists(_translationFilePath))
+            {
+                var file = (UnifiedFile) HostingEnvironment.VirtualPathProvider.GetFile(_translationFilePath);
+                var versioningFile = file as VersioningFile;
+                if (versioningFile != null)
+                {
+                    versions.AddRange(
+                        versioningFile.GetVersions()
+                                      .Select(v => new XmlVersionInfo(v.Id.ToString(), v.Name, v.Created, v.CreatedBy)));
+                }
+            }
+
+            return versions;
         }
 
         private static XmlDocument LoadXml(string filePath)
+        {
+            return LoadXml(filePath, null);
+        }
+
+        private static XmlDocument LoadXml(string filePath, string version)
         {
             if (!HostingEnvironment.VirtualPathProvider.FileExists(filePath))
             {
                 return new XmlDocument();
             }
-            
-            var file = (UnifiedFile) HostingEnvironment.VirtualPathProvider.GetFile(filePath);
+
+            var file = (UnifiedFile)HostingEnvironment.VirtualPathProvider.GetFile(filePath);
+            if (version != null)
+            {
+                // Will throw an exception if the VPP folder doesn't support versioning, but that's reasonable here.
+                file = ((VersioningFile) file).GetVersion(version);
+            }
+
             using (var stream = file.Open(FileMode.Open, FileAccess.Read))
             {
                 var document = new XmlDocument();

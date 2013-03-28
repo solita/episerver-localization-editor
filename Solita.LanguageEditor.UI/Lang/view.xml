@@ -13,6 +13,7 @@
       <gettranslations>Get translations</gettranslations>
       <settranslations>Set translations</settranslations>
       <batchtranslate>Batch translate</batchtranslate>
+      <reverttoolderversion>Revert to older version</reverttoolderversion>
     </languageeditor>
   </language>
   
@@ -28,6 +29,7 @@
       <gettranslations>Hae käännökset</gettranslations>
       <settranslations>Aseta käännökset</settranslations>
       <batchtranslate>Käännä kaikki</batchtranslate>
+      <reverttoolderversion>Palauta vanha versio</reverttoolderversion>
     </languageeditor>
   </language>
   

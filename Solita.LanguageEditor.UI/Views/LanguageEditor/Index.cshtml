@@ -1,6 +1,7 @@
 ﻿@inherits System.Web.Mvc.WebViewPage<Solita.LanguageEditor.UI.Models.LanguageEditorViewModel>
 
 @using System.Globalization
+@using System.Web.Mvc
 @using System.Web.Mvc.Html
 @using EPiServer.Framework.Web.Resources
 @using EPiServer.Shell.Navigation
@@ -51,7 +52,7 @@
             .batch-translation-row input[type=image]{
                 vertical-align: top;
             }
-            .translations-row input[type=text], .batch-translation-row textarea {
+            .translations-row input[type=text], .batch-translation-row textarea, .version-selector {
                 width: 200px;
             }
 
@@ -64,13 +65,14 @@
 
             <div class="language-editor">
 
-                @using(Html.BeginForm(new { Action = "Save"})) {
+                @using (Html.BeginForm(new {Action = "Save"}))
+                {
 
                     <table>
                         <tr>
                             <th></th>
                             <th></th>
-                            @foreach(var lang in Model.Languages)
+                            @foreach (var lang in Model.Languages)
                             {
                                 <th data-key="@lang">
                                     @CultureInfo.GetCultureInfo(lang).DisplayName
@@ -90,7 +92,7 @@
 
                             for (var iTrans = 0; iTrans < Model.Categories[iCat].Translations.Count(); iTrans++)
                             {
-                                <tr data-default="@Model.Categories[iCat].Translations[iTrans].DefaultValue" class="translations-row">
+                                <tr data-default="@Model.Categories[iCat].Translations[iTrans].DefaultValue" data-key="@Model.Categories[iCat].Translations[iTrans].Key"  class="translations-row">
                                     <td>
                                         @Html.HiddenFor(m => m.Categories[iCat].Translations[iTrans].Key)
                                         @Html.HiddenFor(m => m.Categories[iCat].Translations[iTrans].Description)
@@ -146,10 +148,30 @@
                                     </td>
                                 }
                             </tr>
+
+                            <tr><td class="category"><strong>@Html.Translate("/languageeditor/reverttoolderversion")</strong></td></tr>
+                            <tr class="version-revert-row">
+                                <td></td>
+                                <td></td>
+                                @foreach (var language in Model.Languages)
+                                {
+                                    <td class="version-revert-cell" data-key="@language">
+                                        <select class="version-selector">
+                                            @foreach (var version in Model.Versions.Reverse())
+                                            {
+                                                <option value="@version.Id">@version.Name - @version.Created.ToShortDateString() @version.Created.ToShortTimeString() - @version.CreatedBy</option>
+                                            }
+                                        </select>
+                                        <input type="image" src="@ModuleUtil.PathTo("/static/img/arrow_up.png")" class="version-revert"    
+                                               title="@Html.Translate("/languageeditor/reverttoolderversion")" 
+                                               alt="@Html.Translate("/languageeditor/reverttoolderversion")" />
+                                    </td>
+                                }
+                            </tr>
                         }
 
                     </table>
-                   
+
                     <input type="submit" value="@Html.Translate("/languageeditor/undoall")" class="undo-all" />
                     <input type="submit" value="@Html.Translate("/languageeditor/save")" />
                 }
@@ -160,6 +182,16 @@
         <script type="text/javascript">
 
             $(document).ready(function () {
+                $(".version-revert").click(function () {
+                    var version = $(this).siblings(".version-selector:first").val();
+                    var lang = $(this).closest(".version-revert-cell").data("key");
+
+                    var url = '@Url.Action("GetJsonLocalizations")?lang='+ lang + '&version=' + version;
+                    $.ajax({ url: url, success: getJsonLocalizationsCallback, type: 'POST', dataType: 'json' });
+
+                    return false;
+                });
+                
                 $(".get-translations").click(function () {
                     var key = $(this).closest(".batch-translation-cell").data("key");
                     var translations = new Array();
@@ -258,6 +290,19 @@
                     }
                 }
             }
+            
+            function getJsonLocalizationsCallback(json) {
+                var language = json.language;
+                var translations = json.translations;
+                for (var i = 0; i < translations.length; i++) {
+                    $(".translations-row[data-key='" + translations[i].key + "']")
+                        .find("td[data-key='" + language + "']")
+                        .find(".translation-input")
+                        .val(translations[i].translation)
+                        .change();
+                }
+            }
+            
         </script>
 
     </body>
