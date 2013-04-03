@@ -1,7 +1,6 @@
 ﻿@inherits System.Web.Mvc.WebViewPage<Solita.LanguageEditor.UI.Models.LanguageEditorViewModel>
 
 @using System.Globalization
-@using System.Web.Mvc
 @using System.Web.Mvc.Html
 @using EPiServer.Framework.Web.Resources
 @using EPiServer.Shell.Navigation
@@ -34,7 +33,7 @@
             .language-editor {
                 margin: 10px;
             }
-            .language-editor .category {
+            .language-editor .heading-row{
                 padding-top: 1em;
             }
             .language-editor th {
@@ -49,11 +48,14 @@
             .language-editor .value-new {
                 background-color: lightgreen;
             }
-            .batch-translation-row input[type=image]{
-                vertical-align: top;
-            }
-            .translations-row input[type=text], .batch-translation-row textarea, .version-selector {
+            .translations-row input[type=text], .version-selector {
                 width: 200px;
+            }
+            .hidden {
+                display: none;
+            }
+            .image-button {
+                padding: 1px;
             }
 
         </style>
@@ -65,22 +67,22 @@
 
             <div class="language-editor">
 
-                @using (Html.BeginForm(new {Action = "Save"}))
+                @using (Html.BeginForm(new { Action = "Save" }))
                 {
 
                     <table>
-                        <tr>
+                        <tr class="languages-row">
                             <th></th>
                             <th></th>
                             @foreach (var lang in Model.Languages)
                             {
-                                <th data-key="@lang">
+                                <th data-lang="@lang">
                                     @CultureInfo.GetCultureInfo(lang).DisplayName
                                     @if (Model.DevelopmentMode)
                                     {
-                                        <input type="image" src="@ModuleUtil.PathTo("/static/img/arrow_down.png")" class="defaults-column"    
-                                               title="@Html.Translate("/languageeditor/setcolumndefaults")" 
-                                               alt="@Html.Translate("/languageeditor/setcolumndefaults")" />
+                                        <button type="button" class="defaults-column image-button" title="@Html.Translate("/languageeditor/setcolumndefaults")">
+                                            <img src="@ModuleUtil.PathTo("/static/img/arrow_down.png")" alt="@Html.Translate("/languageeditor/setcolumndefaults")" />
+                                        </button>
                                     }
                                 </th>
                             }
@@ -88,92 +90,98 @@
         
                         @for (var iCat = 0; iCat < Model.Categories.Count(); iCat++)
                         {
-                            <tr><td class="category"><strong>@Model.Categories[iCat].Name</strong></td></tr>
+                            <tr class="category-row"><td class="heading-row"><strong class="category">@Model.Categories[iCat].Name</strong></td></tr>
 
                             for (var iTrans = 0; iTrans < Model.Categories[iCat].Translations.Count(); iTrans++)
                             {
-                                <tr data-default="@Model.Categories[iCat].Translations[iTrans].DefaultValue" data-key="@Model.Categories[iCat].Translations[iTrans].Key"  class="translations-row">
+                                <tr class="translations-row"
+                                    data-default="@Model.Categories[iCat].Translations[iTrans].DefaultValue"
+                                    data-key="@Model.Categories[iCat].Translations[iTrans].Key" 
+                                    data-description="@Model.Categories[iCat].Translations[iTrans].Description">
                                     <td>
+                                        @Model.Categories[iCat].Translations[iTrans].Description
                                         @Html.HiddenFor(m => m.Categories[iCat].Translations[iTrans].Key)
                                         @Html.HiddenFor(m => m.Categories[iCat].Translations[iTrans].Description)
-                                        @Model.Categories[iCat].Translations[iTrans].Description
                                     </td>
                 
                                     <td>
                                         @if (Model.DevelopmentMode)
                                         {
-                                            <input type="image" src="@ModuleUtil.PathTo("/static/img/arrow_right.png")" class="defaults-row"
-                                                   title="@Html.Translate("/languageeditor/setrowdefaults")" 
-                                                   alt="@Html.Translate("/languageeditor/setrowdefaults")" />
+                                            <button type="button" class="defaults-row image-button" title="@Html.Translate("/languageeditor/setrowdefaults")" >
+                                                <img src="@ModuleUtil.PathTo("/static/img/arrow_right.png")" alt="@Html.Translate("/languageeditor/setrowdefaults")" />
+                                            </button>
                                         }
                                     </td>
                 
                                     @foreach (var lang in Model.Languages)
                                     {
-                                        <td data-key="@lang">
-                                            @Html.TextBoxFor(m => m.Categories[iCat].Translations[iTrans].Translations[lang], new {@class = "translation-input", data_original = Model.Categories[iCat].Translations[iTrans].Translations[lang]})
-                                            <input type="image" src="@ModuleUtil.PathTo("/static/img/arrow_undo.png")"
-                                                   title="@Html.Translate("/languageeditor/undo")"
-                                                   alt="@Html.Translate("/languageeditor/undo")"
-                                                   class="undo-cell"  />
+                                        <td data-lang="@lang">
+                                            @Html.TextBoxFor(m => m.Categories[iCat].Translations[iTrans].Translations[lang], new { @class = "translation-input", data_original = Model.Categories[iCat].Translations[iTrans].Translations[lang] })
+                                            <button type="button" class="undo-cell image-button" title="@Html.Translate("/languageeditor/undo")">
+                                                <img src="@ModuleUtil.PathTo("/static/img/arrow_undo.png")" alt="@Html.Translate("/languageeditor/undo")" />
+                                            </button>
                                             @if (Model.DevelopmentMode)
                                             {
-                                                <input type="image" src="@ModuleUtil.PathTo("/static/img/arrow_in.png")" class="defaults-cell" 
-                                                       title="@Html.Translate("/languageeditor/setdefault")"  
-                                                       alt="@Html.Translate("/languageeditor/setdefault")" />
+                                                <button type="button" class="defaults-cell image-button" title="@Html.Translate("/languageeditor/setdefault")"  >
+                                                    <img src="@ModuleUtil.PathTo("/static/img/arrow_in.png")" alt="@Html.Translate("/languageeditor/setdefault")" />
+                                                </button>
                                             }
                                         </td>
                                     }
                                 </tr>
                             }
                         }
-                        
+
                         @if (Model.DevelopmentMode)
                         {
-                            <tr><td class="category"><strong>@Html.Translate("/languageeditor/batchtranslate")</strong></td></tr>
-                            <tr class="batch-translation-row">
-                                <td></td>
-                                <td></td>
-                                @foreach (var language in Model.Languages)
-                                {
-                                    <td class="batch-translation-cell" data-key="@language">
-                                        <textarea class="batch-translations"></textarea>
-                                        <input type="image" src="@ModuleUtil.PathTo("/static/img/arrow_down.png")" class="get-translations"    
-                                               title="@Html.Translate("/languageeditor/gettranslations")" 
-                                               alt="@Html.Translate("/languageeditor/gettranslations")" />
-                                    
-                                        <input type="image" src="@ModuleUtil.PathTo("/static/img/arrow_up.png")" class="set-translations"    
-                                               title="@Html.Translate("/languageeditor/settranslations")" 
-                                               alt="@Html.Translate("/languageeditor/settranslations")" />
-                                    </td>
-                                }
-                            </tr>
-
-                            <tr><td class="category"><strong>@Html.Translate("/languageeditor/reverttoolderversion")</strong></td></tr>
+                            <tr><td class="heading-row"><strong>@Html.Translate("/languageeditor/reverttoolderversion")</strong></td></tr>
                             <tr class="version-revert-row">
                                 <td></td>
                                 <td></td>
                                 @foreach (var language in Model.Languages)
                                 {
-                                    <td class="version-revert-cell" data-key="@language">
+                                    <td class="version-revert-cell" data-lang="@language">
                                         <select class="version-selector">
                                             @foreach (var version in Model.Versions.Reverse())
                                             {
                                                 <option value="@version.Id">@version.Name - @version.Created.ToShortDateString() @version.Created.ToShortTimeString() - @version.CreatedBy</option>
                                             }
                                         </select>
-                                        <input type="image" src="@ModuleUtil.PathTo("/static/img/arrow_up.png")" class="version-revert"    
-                                               title="@Html.Translate("/languageeditor/reverttoolderversion")" 
-                                               alt="@Html.Translate("/languageeditor/reverttoolderversion")" />
+                                        <button class="version-revert image-button"  title="@Html.Translate("/languageeditor/reverttoolderversion")">
+                                            <img src="@ModuleUtil.PathTo("/static/img/arrow_up.png")" alt="@Html.Translate("/languageeditor/reverttoolderversion")" />
+                                        </button>
                                     </td>
                                 }
                             </tr>
                         }
-
                     </table>
 
-                    <input type="submit" value="@Html.Translate("/languageeditor/undoall")" class="undo-all" />
-                    <input type="submit" value="@Html.Translate("/languageeditor/save")" />
+                    if (Model.DevelopmentMode)
+                    {
+                        <table>
+                            <tr><td class="heading-row"><strong>@Html.Translate("/languageeditor/importexport")</strong></td></tr>
+                            <tr class="version-revert-row">
+                                <td>
+                                    <input type="file" class="csv-file-upload" />
+                                    <button type="button" class="csv-import image-button" title="@Html.Translate("/languageeditor/import")">
+                                        <img  src="@ModuleUtil.PathTo("/static/img/arrow_up.png")" alt="@Html.Translate("/languageeditor/import")" />
+                                    </button>
+                                </td>
+                                <td>
+                                    <button type="button" class="csv-export image-button" title="@Html.Translate("/languageeditor/export")">
+                                        <img  src="@ModuleUtil.PathTo("/static/img/page_excel.png")" alt="@Html.Translate("/languageeditor/export")" />
+                                    </button>
+                                    <a class="hidden csv-export-datalink" download="translations.txt"></a>
+                                </td>
+                            </tr>
+                        </table>
+                    }
+
+
+
+
+                    <button type="button" class="undo-all">@Html.Translate("/languageeditor/undoall")</button>
+                    <button type="submit">@Html.Translate("/languageeditor/save")</button>
                 }
 
             </div>
@@ -182,75 +190,114 @@
         <script type="text/javascript">
 
             $(document).ready(function () {
+
+                $(".csv-export").click(function () {
+                    var rows = new Array();
+
+                    var firstRowColumns = new Array();
+                    firstRowColumns.push("Key");
+                    firstRowColumns.push("Description");
+                    $(".languages-row").find('[data-lang]').each(function () {
+                        var lang = $(this).data("lang");
+                        firstRowColumns.push(lang);
+                    });
+                    rows.push(firstRowColumns.join("\t"));
+
+                    $(".category-row").each(function () {
+                        var category = $(this).find(".category").text();
+                        rows.push(category);
+                        
+                        $(this).nextUntil(":not(.translations-row)").each(function () {
+                            var columns = new Array();
+                            columns.push($(this).data("key"));
+                            columns.push($(this).data("description"));
+
+                            $(this).find('.translation-input').each(function () {
+                                columns.push($(this).val());
+                            });
+
+                            rows.push(columns.join("\t"));
+                        });
+                    });
+
+                   
+
+                    var output = btoa(rows.join("\r\n"));
+                    $(".csv-export-datalink").attr("href", 'data:text/plain;charset=UTF-8;base64,' + output);
+                    $(".csv-export-datalink")[0].click();
+                });
+                
+                $(".csv-import").click(function() {
+                    var fileupload = $(".csv-file-upload")[0];
+
+                    if (fileupload.files.length < 1) {
+                        return;
+                    }
+                    
+                    var file = fileupload.files[0];
+
+                    if (!file.type.match('text/plain')) {
+                        alert("File needs to be a plain text file.");
+                        return;
+                    }
+
+                    var reader = new FileReader();
+                    reader.onload = (function() {
+                        return function(e) {
+                            var rows = e.target.result.split(/[\r\n]/g);
+                            var languages = rows[0].split("\t").slice(2);
+                            var translationRows = rows.slice(1);
+
+                            translationRows.forEach(function(row) {
+                                var columns = row.split("\t");
+                                var key = columns[0];
+                                var translations = columns.slice(2);
+
+                                for (var k = 0; k < translations.length; k++) {
+                                    setInput(key, languages[k], translations[k]);
+                                }
+                            });
+                        };
+                    })(file);
+
+                    reader.readAsText(file);
+                });
+                
                 $(".version-revert").click(function () {
                     var version = $(this).siblings(".version-selector:first").val();
-                    var lang = $(this).closest(".version-revert-cell").data("key");
+                    var lang = $(this).closest(".version-revert-cell").data("lang");
 
                     var url = '@Url.Action("GetJsonLocalizations")?lang='+ lang + '&version=' + version;
                     $.ajax({ url: url, success: getJsonLocalizationsCallback, type: 'POST', dataType: 'json' });
-
-                    return false;
                 });
                 
-                $(".get-translations").click(function () {
-                    var key = $(this).closest(".batch-translation-cell").data("key");
-                    var translations = new Array();
-                    getInputsByLanguageKey(key).each(function() {
-                        translations.push($(this).val());
-                    });
-                    $(this).siblings(".batch-translations").val(translations.join("\n")).change();
-
-                    return false;
-                });
-
-                $(".set-translations").click(function () {
-                    var key = $(this).closest(".batch-translation-cell").data("key");
-                    var translations = $(this).siblings(".batch-translations").val().split(/[\r\n]/g);
-                    getInputsByLanguageKey(key).each(function (i) {
-                        $(this).val(translations[i]).change();
-                    });
-
-                    return false;
-                });
-                
-
                 $(".undo-cell").click(function () {
                     var translationInput = $(this).siblings(".translation-input:first");
                     setOriginalValue(translationInput);
-
-                    return false;
                 });
                 
                 $(".undo-all").click(function () {
                     $(".translation-input").each(function() {
                         setOriginalValue($(this));
                     });
-
-                    return false;
                 });
                 
                 $(".defaults-cell").click(function () {
                     var translationInput = $(this).siblings(".translation-input:first");
                     setDefaultValue(translationInput);
-
-                    return false;
                 });
 
                 $(".defaults-column").click(function () {
-                    var key = $(this).parent().data("key");
-                    getInputsByLanguageKey(key).each(function() {
+                    var lang = $(this).parent().data("lang");
+                    getInputsByLanguage(lang).each(function() {
                         setDefaultValue($(this));
                     });
-                    
-                    return false;
                 });
 
                 $(".defaults-row").click(function () {
                     $(this).closest(".translations-row").find(".translation-input").each(function () {
                         setDefaultValue($(this));
                     });
-
-                    return false;
                 });
 
                 $(".translation-input").change(function() {
@@ -258,8 +305,8 @@
                 });
             });
 
-            function getInputsByLanguageKey(key) {
-                return $("td[data-key='" + key + "']").find(".translation-input");
+            function getInputsByLanguage(lang) {
+                return $("td[data-lang='" + lang + "']").find(".translation-input");
             }
 
             function setOriginalValue(translationInput) {
@@ -290,19 +337,23 @@
                     }
                 }
             }
-            
+
             function getJsonLocalizationsCallback(json) {
                 var language = json.language;
                 var translations = json.translations;
                 for (var i = 0; i < translations.length; i++) {
-                    $(".translations-row[data-key='" + translations[i].key + "']")
-                        .find("td[data-key='" + language + "']")
-                        .find(".translation-input")
-                        .val(translations[i].translation)
-                        .change();
+                    setInput(translations[i].key, language, translations[i].translation);
                 }
             }
-            
+
+            function setInput(key, language, translation) {
+                $(".translations-row[data-key='" + key + "']")
+                    .find("td[data-lang='" + language + "']")
+                    .find(".translation-input")
+                    .val(translation)
+                    .change();
+            }
+
         </script>
 
     </body>
