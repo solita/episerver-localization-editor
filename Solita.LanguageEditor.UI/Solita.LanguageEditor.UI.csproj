@@ -97,6 +97,8 @@
     <Content Include="static\img\arrow_right.png" />
     <Content Include="static\img\arrow_undo.png" />
     <Content Include="static\img\arrow_up.png" />
+    <Content Include="static\css\languageeditor.css" />
+    <Content Include="static\js\languageeditor.js" />
     <Content Include="static\img\page_excel.png" />
     <Content Include="Views\LanguageEditor\Index.aspx" />
     <Content Include="Views\LanguageEditor\Index.cshtml" />

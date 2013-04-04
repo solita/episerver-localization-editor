@@ -12,7 +12,7 @@
       <undoall>Undo all changes</undoall>
       <import>Import</import>
       <export>Export</export>
-      <importexport>Import / export</importexport>
+      <importexport>Import / export (requires latest FF/Chrome/Safari)</importexport>
       <reverttoolderversion>Revert to older version</reverttoolderversion>
     </languageeditor>
   </language>
@@ -29,7 +29,7 @@
       <import>Tuo</import>
       <export>Vie</export>
       <importexport>Tuo / vie</importexport>
-      <reverttoolderversion>Palauta vanha versio</reverttoolderversion>
+      <reverttoolderversion>Palauta vanha versio (vaatii uusimman Firefox/Chrome/Safari)</reverttoolderversion>
     </languageeditor>
   </language>
   
