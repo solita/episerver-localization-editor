@@ -59,18 +59,19 @@ namespace Solita.LanguageEditor.UI
             return categories;
         }
 
-        public object GetJsonLocalizations(string language, string version)
+        public object GetJsonLocalizations(string version)
         {
             var xml = LoadXml(_translationFilePath, version);
+            var languages = GetEnabledLanguages();
 
-            var translations = LocalizationHelpers.GetLocalizationDefinitions().Select(d => new
+            var localizations = LocalizationHelpers.GetLocalizationDefinitions().Select(d => new
                 {
                     key = d.Key,
-                    translation = FindExistingTranslation(xml, language, d.Key)
+                    translations = languages.Select(language => new {language, value = FindExistingTranslation(xml, language, d.Key)})
                 });
-                       
 
-            return new {language, translations};
+
+            return new {localizations};
         }
 
         public IList<XmlVersionInfo> GetTranslationFileVersions()

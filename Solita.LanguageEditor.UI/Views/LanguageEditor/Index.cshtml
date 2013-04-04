@@ -48,7 +48,7 @@
             .language-editor .value-new {
                 background-color: lightgreen;
             }
-            .translations-row input[type=text], .version-selector {
+            .translations-row input[type=text] {
                 width: 200px;
             }
             .hidden {
@@ -65,7 +65,7 @@
         <div id="epi-globalDocument">
             @Html.Raw(Html.GlobalMenu())
 
-            <div class="language-editor">
+            <div class="language-editor" data-localizations-url="@Url.Action("GetJsonLocalizations")">
 
                 @using (Html.BeginForm(new { Action = "Save" }))
                 {
@@ -134,25 +134,7 @@
 
                         @if (Model.DevelopmentMode)
                         {
-                            <tr><td class="heading-row"><strong>@Html.Translate("/languageeditor/reverttoolderversion")</strong></td></tr>
-                            <tr class="version-revert-row">
-                                <td></td>
-                                <td></td>
-                                @foreach (var language in Model.Languages)
-                                {
-                                    <td class="version-revert-cell" data-lang="@language">
-                                        <select class="version-selector">
-                                            @foreach (var version in Model.Versions.Reverse())
-                                            {
-                                                <option value="@version.Id">@version.Name - @version.Created.ToShortDateString() @version.Created.ToShortTimeString() - @version.CreatedBy</option>
-                                            }
-                                        </select>
-                                        <button class="version-revert image-button"  title="@Html.Translate("/languageeditor/reverttoolderversion")">
-                                            <img src="@ModuleUtil.PathTo("/static/img/arrow_up.png")" alt="@Html.Translate("/languageeditor/reverttoolderversion")" />
-                                        </button>
-                                    </td>
-                                }
-                            </tr>
+                           
                         }
                     </table>
 
@@ -160,7 +142,7 @@
                     {
                         <table>
                             <tr><td class="heading-row"><strong>@Html.Translate("/languageeditor/importexport")</strong></td></tr>
-                            <tr class="version-revert-row">
+                            <tr class="import-export-row">
                                 <td>
                                     <input type="file" class="csv-file-upload" />
                                     <button type="button" class="csv-import image-button" title="@Html.Translate("/languageeditor/import")">
@@ -174,11 +156,23 @@
                                     <a class="hidden csv-export-datalink" download="translations.txt"></a>
                                 </td>
                             </tr>
+                            
+                            <tr><td class="heading-row"><strong>@Html.Translate("/languageeditor/reverttoolderversion")</strong></td></tr>
+                            <tr class="version-revert-row">
+                                <td>
+                                    <select class="version-selector">
+                                        @foreach (var version in Model.Versions.Reverse())
+                                        {
+                                            <option value="@version.Id">@version.Name - @version.Created.ToShortDateString() @version.Created.ToShortTimeString() - @version.CreatedBy</option>
+                                        }
+                                    </select>
+                                    <button type="button" class="version-revert image-button" title="@Html.Translate("/languageeditor/reverttoolderversion")">
+                                        <img src="@ModuleUtil.PathTo("/static/img/arrow_up.png")" alt="@Html.Translate("/languageeditor/reverttoolderversion")" />
+                                    </button>
+                                </td>
+                            </tr>
                         </table>
                     }
-
-
-
 
                     <button type="button" class="undo-all">@Html.Translate("/languageeditor/undoall")</button>
                     <button type="submit">@Html.Translate("/languageeditor/save")</button>
@@ -186,7 +180,7 @@
 
             </div>
         </div>
-
+        
         <script type="text/javascript">
 
             $(document).ready(function () {
@@ -219,9 +213,7 @@
                             rows.push(columns.join("\t"));
                         });
                     });
-
-                   
-
+                    
                     var output = btoa(rows.join("\r\n"));
                     $(".csv-export-datalink").attr("href", 'data:text/plain;charset=UTF-8;base64,' + output);
                     $(".csv-export-datalink")[0].click();
@@ -265,10 +257,20 @@
                 
                 $(".version-revert").click(function () {
                     var version = $(this).siblings(".version-selector:first").val();
-                    var lang = $(this).closest(".version-revert-cell").data("lang");
-
-                    var url = '@Url.Action("GetJsonLocalizations")?lang='+ lang + '&version=' + version;
-                    $.ajax({ url: url, success: getJsonLocalizationsCallback, type: 'POST', dataType: 'json' });
+                    var url = $(".language-editor").data("localizations-url") + '?version=' + version;
+                    
+                    $.ajax({
+                        url: url,
+                        success: function(json) {
+                            json.localizations.forEach(function(localization) {
+                                localization.translations.forEach(function(translation) {
+                                    setInput(localization.key, translation.language, translation.value);
+                                });
+                            });
+                        },
+                        type: 'POST',
+                        dataType: 'json'
+                    });
                 });
                 
                 $(".undo-cell").click(function () {
@@ -335,14 +337,6 @@
                     } else {
                         translationInput.addClass("value-modified");
                     }
-                }
-            }
-
-            function getJsonLocalizationsCallback(json) {
-                var language = json.language;
-                var translations = json.translations;
-                for (var i = 0; i < translations.length; i++) {
-                    setInput(translations[i].key, language, translations[i].translation);
                 }
             }
 

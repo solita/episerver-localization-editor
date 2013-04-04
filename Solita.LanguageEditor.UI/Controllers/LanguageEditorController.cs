@@ -43,9 +43,9 @@ namespace Solita.LanguageEditor.UI.Controllers
             return RedirectToAction("Index");
         }
 
-        public JsonResult GetJsonLocalizations(string lang, string version)
+        public JsonResult GetJsonLocalizations(string version)
         {
-            return Json(_persister.GetJsonLocalizations(lang, version));
+            return Json(_persister.GetJsonLocalizations(version));
         }
     }
 }
