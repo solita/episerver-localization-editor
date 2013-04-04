@@ -91,7 +91,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Lang\view.xml" />
+    <EmbeddedResource Include="Lang\view.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <Content Include="static\img\arrow_down.png" />
     <Content Include="static\img\arrow_in.png" />
     <Content Include="static\img\arrow_right.png" />
