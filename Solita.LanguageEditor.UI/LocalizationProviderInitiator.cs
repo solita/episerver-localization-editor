@@ -8,6 +8,7 @@ using EPiServer.Framework.Localization;
 using EPiServer.Framework.Localization.XmlResources;
 using EPiServer.Web.Hosting;
 using Solita.LanguageEditor.UI.Common;
+using log4net;
 
 namespace Solita.LanguageEditor.UI
 {
@@ -16,6 +17,7 @@ namespace Solita.LanguageEditor.UI
     [ModuleDependency(typeof(EPiServer.Web.InitializationModule))] 
     public class LocalizationProviderInitiator : IInitializableModule
     {
+        private static readonly ILog Log = LogManager.GetLogger(typeof(LocalizationProviderInitiator));
         public const string ProviderName = "SolitaVirtualPathLocalizationProvider";
 
         public void Initialize(InitializationEngine context)
@@ -45,11 +47,18 @@ namespace Solita.LanguageEditor.UI
             {
                 Directory.CreateDirectory(physicalDirectory);
             }
-            
-            //a VPP with the path below must be registered in the sites configuration.
-            var localizationProvider = localizationProviderInitializer.GetInitializedProvider(langFolderVirtualPath, ProviderName);
-            //Inserts the provider first in the provider list so that it is prioritized over default providers.
-            service.Providers.Insert(0, localizationProvider);
+
+            try
+            {
+                //a VPP with the path below must be registered in the sites configuration.
+                var localizationProvider = localizationProviderInitializer.GetInitializedProvider(langFolderVirtualPath, ProviderName);
+                //Inserts the provider first in the provider list so that it is prioritized over default providers.
+                service.Providers.Insert(0, localizationProvider);
+            }
+            catch(Exception e)
+            {
+                Log.Error("Failed to add custom localization provider." , e);
+            }
         }
 
         public void Uninitialize(InitializationEngine context)

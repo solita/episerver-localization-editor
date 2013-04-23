@@ -19,7 +19,8 @@ namespace Solita.LanguageEditor.UI
     public class LocalizationPersister
     {
         private const string TranslationFile = "Localizations.xml";
-        private const string LanguageXPath = "/languages/language";
+        private const string LanguagesXPath = "/languages";
+        private const string LanguageXPath = LanguagesXPath + "/language";
         private const string TranslationXPath = LanguageXPath + "[@id='{0}']{1}";
 
         private readonly string _translationFilePath;
@@ -130,6 +131,9 @@ namespace Solita.LanguageEditor.UI
         public void SaveLocalizations(LanguageEditorViewModel model)
         {
             var xml = new XmlDocument();
+            // Ensure root node is created
+            xml.CreateXPath(LanguagesXPath);
+
             foreach(var translation in model.Categories.SelectMany(category => category.Translations))
             {
                 foreach (var dictionary in translation.Translations)

@@ -36,6 +36,7 @@ namespace Solita.LanguageEditor.UI.Controllers
             //return View("Index", model);
         }
 
+        [HttpPost]
         public ActionResult Save(LanguageEditorViewModel model)
         {
             _persister.SaveLocalizations(model);
@@ -43,6 +44,7 @@ namespace Solita.LanguageEditor.UI.Controllers
             return RedirectToAction("Index");
         }
 
+        [HttpPost]
         public JsonResult GetJsonLocalizations(string version)
         {
             return Json(_persister.GetJsonLocalizations(version));

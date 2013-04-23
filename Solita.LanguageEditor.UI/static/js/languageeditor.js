@@ -32,7 +32,8 @@ languageditor = (function() {
                 });
             });
 
-            var output = btoa(rows.join("\r\n"));
+            // Base-64 encode with UTF-8 support using the method described here https://developer.mozilla.org/en-US/docs/DOM/window.btoa
+            var output = btoa(unescape(encodeURIComponent(rows.join("\r\n"))));
             $(".csv-export-datalink").attr("href", 'data:text/plain;charset=UTF-8;base64,' + output);
             $(".csv-export-datalink")[0].click();
         });
