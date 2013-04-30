@@ -112,7 +112,7 @@ namespace Solita.LanguageEditor.UI
                 file = ((VersioningFile) file).GetVersion(version);
             }
 
-            using (var stream = file.Open(FileMode.Open, FileAccess.Read))
+            using (var stream = file.Open(FileMode.Open, FileAccess.Read, FileShare.Read))
             {
                 var document = new XmlDocument();
                 document.Load(stream);
