@@ -1,6 +1,6 @@
 ﻿"use strict";
 
-languageditor = (function() {
+var languageditor = (function() {
     $(document).ready(function() {
 
         $(".csv-export").click(function() {
