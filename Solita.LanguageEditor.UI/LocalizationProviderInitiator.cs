@@ -2,11 +2,13 @@
 using System.IO;
 using System.Linq;
 using System.Web;
+using System.Web.Hosting;
 using EPiServer.Events.Clients;
 using EPiServer.Framework;
 using EPiServer.Framework.Initialization;
 using EPiServer.Framework.Localization;
 using EPiServer.Framework.Localization.XmlResources;
+using EPiServer.ServiceLocation;
 using EPiServer.Web.Hosting;
 using Solita.LanguageEditor.UI.Common;
 using log4net;
@@ -27,6 +29,7 @@ namespace Solita.LanguageEditor.UI
             var localizationService = context.Locate.Advanced.GetInstance<LocalizationService>() as ProviderBasedLocalizationService;
             if (localizationService == null)
             {
+                Log.Error("LocalizationService unavailable");
                 return;
             }
             
@@ -36,28 +39,31 @@ namespace Solita.LanguageEditor.UI
 
         private static void AddProvider(ProviderBasedLocalizationService service)
         {
-            var langFolderVirtualPath = Settings.AutoPopulated.LangFolderVirtualPath;
-            if (string.IsNullOrEmpty(langFolderVirtualPath))
-            {
-                return;
-            }
-
-            var localizationProviderInitializer = new VirtualPathXmlLocalizationProviderInitializer(GenericHostingEnvironment.VirtualPathProvider);
-
-            // Due to what is likely bug in Episerver, there needs to be a physical path with the same
-            // name as the virtual path, or else GetInitializedProvider fails since it can't listen to changes in a network folder.
-            var physicalDirectory = HttpContext.Current.Server.MapPath(langFolderVirtualPath);
-            if (!Directory.Exists(physicalDirectory))
-            {
-                Directory.CreateDirectory(physicalDirectory);
-            }
-
             try
             {
+                var langFolderVirtualPath = Settings.AutoPopulated.LangFolderVirtualPath;
+                if (string.IsNullOrEmpty(langFolderVirtualPath))
+                {
+                    Log.Error("LangFolderVirtualPath undefined.");
+                    return;
+                }
+
+                // Due to what is likely bug in Episerver, there needs to be a physical path with the same
+                // name as the virtual path, or else GetInitializedProvider fails since it can't listen to changes in a network folder.
+                var physicalDirectory = HostingEnvironment.MapPath(langFolderVirtualPath);
+                if (!Directory.Exists(physicalDirectory))
+                {
+                    Directory.CreateDirectory(physicalDirectory);
+                }
+
                 //a VPP with the path below must be registered in the sites configuration.
+                var localizationProviderInitializer = new VirtualPathXmlLocalizationProviderInitializer(GenericHostingEnvironment.VirtualPathProvider);
                 var localizationProvider = localizationProviderInitializer.GetInitializedProvider(langFolderVirtualPath, ProviderName);
+
                 //Inserts the provider first in the provider list so that it is prioritized over default providers.
                 service.Providers.Insert(0, localizationProvider);
+
+                Log.Debug("LocalizationProvider added");
             }
             catch(Exception e)
             {
@@ -71,6 +77,7 @@ namespace Solita.LanguageEditor.UI
             var localizationService = context.Locate.Advanced.GetInstance<LocalizationService>() as ProviderBasedLocalizationService;
             if (localizationService == null)
             {
+                Log.Error("LocalizationService unavailable");
                 return;
             }
 
@@ -80,19 +87,32 @@ namespace Solita.LanguageEditor.UI
 
         private static void RemoveProvider(ProviderBasedLocalizationService service)
         {
-            //Gets any provider that has the same name as the one initialized.
-            var localizationProvider = service.Providers.FirstOrDefault(p => p.Name.Equals(ProviderName, StringComparison.Ordinal));
-            if (localizationProvider != null)
+            try
             {
-                //If found, remove it.
-                service.Providers.Remove(localizationProvider);
+                //Gets any provider that has the same name as the one initialized.
+                var localizationProvider = service.Providers.FirstOrDefault(p => p.Name.Equals(ProviderName, StringComparison.Ordinal));
+                if (localizationProvider != null)
+                {
+                    //If found, remove it.
+                    service.Providers.Remove(localizationProvider);
+                    Log.Debug("LocalizationProvider remove");
+                }
+            }
+            catch (Exception e)
+            {
+                Log.Error("Failed to remove custom localization provider.", e);
             }
         }
-
-
+        
         public static void ReInitProvider()
         {
-            var service = EPiServer.ServiceLocation.ServiceLocator.Current.GetInstance<LocalizationService>() as ProviderBasedLocalizationService;
+            var service = ServiceLocator.Current.GetInstance<LocalizationService>() as ProviderBasedLocalizationService;
+            if (service == null)
+            {
+                Log.Error("LocalizationService unavailable");
+                return;
+            }
+
             RemoveProvider(service);
             AddProvider(service);
         }
