@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Hosting;
 using System.Xml;
 using EPiServer.DataAbstraction;
+using EPiServer.Events.Clients;
 using EPiServer.ServiceLocation;
 using EPiServer.Web.Hosting;
 using Solita.LanguageEditor.Definitions;
@@ -144,8 +145,8 @@ namespace Solita.LanguageEditor.UI
 
             AddLanguageNames(xml);
             SaveXml(xml, _translationFilePath);
-            
-            LocalizationProviderInitiator.ReInitProvider();
+
+            LocalizationsUpdatedEventHandler.RaiseLocalizationsUpdatedEvent();
         }
 
         private static void SetTranslation(XmlDocument xml, string key, string lang, string value)

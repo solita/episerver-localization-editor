@@ -2,6 +2,7 @@
 using System.IO;
 using System.Linq;
 using System.Web;
+using EPiServer.Events.Clients;
 using EPiServer.Framework;
 using EPiServer.Framework.Initialization;
 using EPiServer.Framework.Localization;
@@ -24,16 +25,19 @@ namespace Solita.LanguageEditor.UI
         {
             //Casts the current LocalizationService to a ProviderBasedLocalizationService to get access to the current list of providers
             var localizationService = context.Locate.Advanced.GetInstance<LocalizationService>() as ProviderBasedLocalizationService;
-            if (localizationService != null)
+            if (localizationService == null)
             {
-                AddProvider(localizationService);
+                return;
             }
+            
+            AddProvider(localizationService);
+            Event.Get(LocalizationsUpdatedEventHandler.EventId).Raised += LocalizationsUpdatedEventHandler.HandleUpdate;
         }
 
         private static void AddProvider(ProviderBasedLocalizationService service)
         {
             var langFolderVirtualPath = Settings.AutoPopulated.LangFolderVirtualPath;
-            if(string.IsNullOrEmpty(langFolderVirtualPath))
+            if (string.IsNullOrEmpty(langFolderVirtualPath))
             {
                 return;
             }
@@ -65,10 +69,13 @@ namespace Solita.LanguageEditor.UI
         {
             //Casts the current LocalizationService to a ProviderBasedLocalizationService to get access to the current list of providers
             var localizationService = context.Locate.Advanced.GetInstance<LocalizationService>() as ProviderBasedLocalizationService;
-            if (localizationService != null)
+            if (localizationService == null)
             {
-                RemoveProvider(localizationService);
+                return;
             }
+
+            RemoveProvider(localizationService);
+            Event.Get(LocalizationsUpdatedEventHandler.EventId).Raised -= LocalizationsUpdatedEventHandler.HandleUpdate;
         }
 
         private static void RemoveProvider(ProviderBasedLocalizationService service)

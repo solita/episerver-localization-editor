@@ -32,8 +32,6 @@ namespace Solita.LanguageEditor.UI.Controllers
             // For some reason EPiServer's add-on system doesn't check for .cshtml files, so the view path needs to be set manually
             var viewPath = ModuleUtil.PathTo("Views/LanguageEditor/Index.cshtml");
             return View(viewPath, model);
-            
-            //return View("Index", model);
         }
 
         [HttpPost]
