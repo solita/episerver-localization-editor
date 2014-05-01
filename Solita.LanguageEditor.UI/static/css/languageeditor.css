@@ -4,6 +4,7 @@
 
     .language-editor td {
         padding: 0 5px;
+        white-space: nowrap;
     }
 
     .language-editor th {
