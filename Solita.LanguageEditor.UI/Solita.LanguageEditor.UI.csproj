@@ -104,19 +104,18 @@
     <EmbeddedResource Include="Lang\view.xml">
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <Content Include="static\img\arrow_down.png" />
-    <Content Include="static\img\arrow_in.png" />
-    <Content Include="static\img\arrow_right.png" />
-    <Content Include="static\img\arrow_undo.png" />
-    <Content Include="static\img\arrow_up.png" />
-    <Content Include="static\css\languageeditor.css" />
-    <Content Include="static\js\languageeditor.js" />
-    <Content Include="static\img\page_excel.png" />
-    <Content Include="Views\LanguageEditor\Index.aspx" />
-    <Content Include="Views\LanguageEditor\Index.cshtml" />
+    <Content Include="Modules\Solita.LanguageEditor.UI\static\img\arrow_down.png" />
+    <Content Include="Modules\Solita.LanguageEditor.UI\static\img\arrow_in.png" />
+    <Content Include="Modules\Solita.LanguageEditor.UI\static\img\arrow_right.png" />
+    <Content Include="Modules\Solita.LanguageEditor.UI\static\img\arrow_undo.png" />
+    <Content Include="Modules\Solita.LanguageEditor.UI\static\img\arrow_up.png" />
+    <Content Include="Modules\Solita.LanguageEditor.UI\static\css\languageeditor.css" />
+    <Content Include="Modules\Solita.LanguageEditor.UI\static\js\languageeditor.js" />
+    <Content Include="Modules\Solita.LanguageEditor.UI\static\img\page_excel.png" />
+    <Content Include="Modules\Solita.LanguageEditor.UI\Views\LanguageEditor\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Solita.LanguageEditor.nuspec">
+    <Content Include="Solita.LanguageEditor.UI.nuspec">
       <SubType>Designer</SubType>
     </Content>
   </ItemGroup>
@@ -128,10 +127,13 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Web.config" />
+    <Content Include="Modules\Solita.LanguageEditor.UI\Views\Web.config" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Web.config.transform" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -168,6 +170,10 @@
   <Target Name="AfterBuild" DependsOnTargets="CreateAddOnPackage; ">
   </Target>
   <Target Name="CreateAddOnPackage">
-    <Exec Command="nuget pack $(MSBuildProjectFile) -OutputDirectory $(OutputPath)..\Releases\" />
+    <Exec Command="nuget pack $(MSBuildProjectFile) -Prop Configuration=Release -OutputDirectory $(OutputPath)..\Releases\" />
   </Target>
+  <PropertyGroup>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
 </Project>
