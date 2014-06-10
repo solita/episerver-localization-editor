@@ -139,7 +139,9 @@ namespace Solita.LanguageEditor.UI
             {
                 foreach (var dictionary in translation.Translations)
                 {
-                    SetTranslation(xml, translation.Key, dictionary.Key, dictionary.Value);
+                    if (!string.IsNullOrWhiteSpace(dictionary.Value)) {
+                        SetTranslation(xml, translation.Key, dictionary.Key, dictionary.Value);
+                    }
                 }
             }
 
