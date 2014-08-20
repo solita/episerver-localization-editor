@@ -42,12 +42,19 @@
     <Compile Include="LocalizationHelpers.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="Solita.LanguageEditor.Definitions.nuspec">
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
+  <Target Name="AfterBuild" DependsOnTargets="CreateAddOnPackage; ">
   </Target>
-  <Target Name="AfterBuild">
+  <Target Name="CreateAddOnPackage">
+    <Exec Command="nuget pack $(MSBuildProjectFile) -Prop Configuration=Release -OutputDirectory $(OutputPath)..\..\Releases\" />
   </Target>
-  -->
+  <PropertyGroup>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
 </Project>
