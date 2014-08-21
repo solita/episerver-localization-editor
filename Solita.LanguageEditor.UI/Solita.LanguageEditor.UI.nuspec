@@ -15,7 +15,7 @@
     <!--<copyright>Copyright 2012</copyright>-->
     <dependencies>
       <dependency id="Solita.LanguageEditor.Definitions" version="1.4.0.0" />
-      <dependency id="log4net" version="1.2.10.0" />
+      <dependency id="Episerver.CMS.Core" version="7.6.0" />
     </dependencies>
   </metadata>
 </package>
