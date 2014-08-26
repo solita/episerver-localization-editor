@@ -1,4 +1,4 @@
-﻿namespace Solita.LanguageEditor.Definitions
+﻿namespace Solita.LanguageEditor.UI.Definitions
 {
     public class LocalizationDefinition
     {

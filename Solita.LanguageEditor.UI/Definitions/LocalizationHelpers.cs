@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace Solita.LanguageEditor.Definitions
+namespace Solita.LanguageEditor.UI.Definitions
 {
     public class LocalizationHelpers
     {

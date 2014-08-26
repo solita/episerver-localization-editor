@@ -14,7 +14,6 @@
     <!--<releaseNotes>Summary of changes made in this release of the package.</releaseNotes>-->
     <!--<copyright>Copyright 2012</copyright>-->
     <dependencies>
-      <dependency id="Solita.LanguageEditor.Definitions" version="1.4.0.0" />
       <dependency id="Episerver.CMS.Core" version="7.6.0" />
     </dependencies>
   </metadata>

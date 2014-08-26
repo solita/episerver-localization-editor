@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Solita.LanguageEditor.Definitions
+namespace Solita.LanguageEditor.UI.Definitions
 {
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
     public class LocalizationCategoryAttribute : Attribute

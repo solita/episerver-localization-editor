@@ -3,16 +3,14 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Web;
 using System.Web.Hosting;
 using System.Xml;
 using EPiServer.DataAbstraction;
-using EPiServer.Events.Clients;
 using EPiServer.ServiceLocation;
 using EPiServer.Web.Hosting;
-using Solita.LanguageEditor.Definitions;
 using Solita.LanguageEditor.UI.Common;
+using Solita.LanguageEditor.UI.Definitions;
 using Solita.LanguageEditor.UI.Models;
 
 namespace Solita.LanguageEditor.UI

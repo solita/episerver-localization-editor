@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-namespace Solita.LanguageEditor.Definitions
+namespace Solita.LanguageEditor.UI.Definitions
 {
     public class LocalizationAttributeHelpers
     {

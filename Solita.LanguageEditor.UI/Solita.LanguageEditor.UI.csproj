@@ -41,6 +41,11 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Common\ModuleUtil.cs" />
+    <Compile Include="Definitions\LocalizationAttribute.cs" />
+    <Compile Include="Definitions\LocalizationAttributeHelpers.cs" />
+    <Compile Include="Definitions\LocalizationCategoryAttribute.cs" />
+    <Compile Include="Definitions\LocalizationDefinition.cs" />
+    <Compile Include="Definitions\LocalizationHelpers.cs" />
     <Compile Include="Lang\CmsMenuTitleProvider.cs" />
     <Compile Include="LocalizationsUpdatedEventHandler.cs" />
     <Compile Include="Models\CategoryList.cs" />
@@ -207,13 +212,6 @@
     <Content Include="Solita.LanguageEditor.UI.nuspec">
       <SubType>Designer</SubType>
     </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Solita.LanguageEditor.Definitions\Solita.LanguageEditor.Definitions.csproj">
-      <Project>{36c4d264-3a0c-4d58-8dc7-c858a8c4e37f}</Project>
-      <Name>Solita.LanguageEditor.Definitions</Name>
-      <Private>True</Private>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Modules\Solita.LanguageEditor.UI\Views\Web.config" />
