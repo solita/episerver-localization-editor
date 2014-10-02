@@ -259,7 +259,7 @@
   <Target Name="AfterBuild" DependsOnTargets="CreateAddOnPackage; ">
   </Target>
   <Target Name="CreateAddOnPackage">
-    <Exec Command="$(ProjectDir)\..\packages\NuGet.CommandLine.2.7.3\tools\nuget.exe pack $(MSBuildProjectFile) -OutputDirectory $(OutputPath)..\Releases\" />
+    <Exec Command="$(ProjectDir)\..\packages\NuGet.CommandLine.2.7.3\tools\nuget.exe pack $(MSBuildProjectFile) -Prop Configuration=Release -OutputDirectory $(OutputPath)..\Releases\" />
   </Target>
   <PropertyGroup>
     <PostBuildEvent>
