@@ -193,15 +193,15 @@
     <EmbeddedResource Include="Lang\view.xml">
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <Content Include="Modules\Solita.LanguageEditor.UI\static\img\arrow_down.png" />
-    <Content Include="Modules\Solita.LanguageEditor.UI\static\img\arrow_in.png" />
-    <Content Include="Modules\Solita.LanguageEditor.UI\static\img\arrow_right.png" />
-    <Content Include="Modules\Solita.LanguageEditor.UI\static\img\arrow_undo.png" />
-    <Content Include="Modules\Solita.LanguageEditor.UI\static\img\arrow_up.png" />
-    <Content Include="Modules\Solita.LanguageEditor.UI\static\css\languageeditor.css" />
-    <Content Include="Modules\Solita.LanguageEditor.UI\static\js\languageeditor.js" />
-    <Content Include="Modules\Solita.LanguageEditor.UI\static\img\page_excel.png" />
-    <Content Include="Modules\Solita.LanguageEditor.UI\Views\LanguageEditor\Index.cshtml" />
+    <Content Include="Modules\_protected\Solita.LanguageEditor.UI\static\img\arrow_down.png" />
+    <Content Include="Modules\_protected\Solita.LanguageEditor.UI\static\img\arrow_in.png" />
+    <Content Include="Modules\_protected\Solita.LanguageEditor.UI\static\img\arrow_right.png" />
+    <Content Include="Modules\_protected\Solita.LanguageEditor.UI\static\img\arrow_undo.png" />
+    <Content Include="Modules\_protected\Solita.LanguageEditor.UI\static\img\arrow_up.png" />
+    <Content Include="Modules\_protected\Solita.LanguageEditor.UI\static\css\languageeditor.css" />
+    <Content Include="Modules\_protected\Solita.LanguageEditor.UI\static\js\languageeditor.js" />
+    <Content Include="Modules\_protected\Solita.LanguageEditor.UI\static\img\page_excel.png" />
+    <Content Include="Modules\_protected\Solita.LanguageEditor.UI\Views\LanguageEditor\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Solita.LanguageEditor.UI.nuspec">
@@ -216,13 +216,16 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Modules\Solita.LanguageEditor.UI\Views\Web.config" />
+    <Content Include="Modules\_protected\Solita.LanguageEditor.UI\Views\Web.config" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Web.config.transform" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Modules\_protected\Solita.LanguageEditor.UI\module.config" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

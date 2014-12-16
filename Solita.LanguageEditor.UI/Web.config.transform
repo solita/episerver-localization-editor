@@ -1,12 +1,8 @@
 ﻿<?xml version="1.0"?>
 <configuration>
   <episerver.shell>
-    <publicModules>
-      <add name="Solita.LanguageEditor.UI">
-        <assemblies>
-          <add assembly="Solita.LanguageEditor.UI" />
-        </assemblies>
-      </add>
-    </publicModules>
+    <protectedModules>
+      <add name="Solita.LanguageEditor.UI" />
+    </protectedModules>
   </episerver.shell>
 </configuration>

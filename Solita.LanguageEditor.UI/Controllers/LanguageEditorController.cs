@@ -6,7 +6,6 @@ using Solita.LanguageEditor.UI.Models;
 
 namespace Solita.LanguageEditor.UI.Controllers
 {
-    [Authorize(Roles = "WebEditors, WebAdmins, Administrators")]
     public class LanguageEditorController : Controller
     {
         private readonly LocalizationPersister _persister;
