@@ -12,6 +12,10 @@ namespace Solita.LocalizationEditor.UI.Common
             {
                 var settings = new Settings();
                 PlugInSettings.AutoPopulate(settings);
+                if (string.IsNullOrWhiteSpace(settings.LangFolderVirtualPath))
+                {
+                    settings.LangFolderVirtualPath = "~/i18n/";
+                }
                 return settings;
             }
         }
