@@ -7,7 +7,7 @@ namespace Solita.LocalizationEditor.UI.Models
     {
         public IList<string> Languages { get; set; }
         public CategoryList Categories { get; set; }
-        public bool DevelopmentMode { get; set; }
+        public bool PowertoolsMode { get; set; }
         public IList<XmlVersionInfo> Versions { get; set; }
         
         public LocalizationEditorViewModel()

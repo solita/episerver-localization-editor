@@ -46,7 +46,7 @@
                             {
                                 <th data-lang="@lang">
                                     @CultureInfo.GetCultureInfo(lang).DisplayName
-                                    @if (Model.DevelopmentMode)
+                                    @if (Model.PowertoolsMode)
                                     {
                                         <button type="button" class="defaults-column image-button" title="@Html.Translate("/LocalizationEditor/setcolumndefaults")">
                                             <img src="@ModuleUtil.PathTo("/static/img/arrow_down.png")" alt="@Html.Translate("/LocalizationEditor/setcolumndefaults")" />
@@ -73,7 +73,7 @@
                                     </td>
                 
                                     <td>
-                                        @if (Model.DevelopmentMode)
+                                        @if (Model.PowertoolsMode)
                                         {
                                             <button type="button" class="defaults-row image-button" title="@Html.Translate("/LocalizationEditor/setrowdefaults")" >
                                                 <img src="@ModuleUtil.PathTo("/static/img/arrow_right.png")" alt="@Html.Translate("/LocalizationEditor/setrowdefaults")" />
@@ -88,7 +88,7 @@
                                             <button type="button" class="undo-cell image-button" title="@Html.Translate("/LocalizationEditor/undo")">
                                                 <img src="@ModuleUtil.PathTo("/static/img/arrow_undo.png")" alt="@Html.Translate("/LocalizationEditor/undo")" />
                                             </button>
-                                            @if (Model.DevelopmentMode)
+                                            @if (Model.PowertoolsMode)
                                             {
                                                 <button type="button" class="defaults-cell image-button" title="@Html.Translate("/LocalizationEditor/setdefault")"  >
                                                     <img src="@ModuleUtil.PathTo("/static/img/arrow_in.png")" alt="@Html.Translate("/LocalizationEditor/setdefault")" />
@@ -119,7 +119,7 @@
                             </td>
                         </tr>
                             
-                        @if (Model.DevelopmentMode)
+                        @if (Model.PowertoolsMode)
                         {
                             <tr><td class="heading-row"><strong>@Html.Translate("/LocalizationEditor/importexport")</strong></td></tr>
                             <tr class="import-export-row">

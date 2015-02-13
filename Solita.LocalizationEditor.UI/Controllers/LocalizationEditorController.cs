@@ -19,12 +19,12 @@ namespace Solita.LocalizationEditor.UI.Controllers
         public ActionResult Index()
         {
             var model = new LocalizationEditorViewModel
-                {
-                    Categories = _persister.GetLocalizations(),
-                    Languages = _persister.GetEnabledLanguages(),
-                    Versions = _persister.GetTranslationFileVersions(),
-                    DevelopmentMode = Settings.AutoPopulated.DevelopmentMode
-                };
+            {
+                Categories = _persister.GetLocalizations(),
+                Languages = _persister.GetEnabledLanguages(),
+                Versions = _persister.GetTranslationFileVersions(),
+                PowertoolsMode = !Settings.AutoPopulated.DisablePowertoolsMode
+            };
 
             return View(ModuleUtil.PathTo("Views/LocalizationEditor/Index.cshtml"), model);
         }

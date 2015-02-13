@@ -20,14 +20,14 @@ namespace Solita.LocalizationEditor.UI.Common
             }
         }
 
-        [PlugInProperty(Description = "Virtual path to lang folder",
+        [PlugInProperty(Description = "Virtual path to lang folder (default: ~/i18n/)",
             AdminControl = typeof (TextBox),
             AdminControlValue = "Text")]
         public string LangFolderVirtualPath { get; set; }
 
-        [PlugInProperty(Description = "Development mode",
+        [PlugInProperty(Description = "Disable powertools mode",
            AdminControl = typeof(CheckBox),
            AdminControlValue = "Checked")]
-        public bool DevelopmentMode { get; set; }
+        public bool DisablePowertoolsMode { get; set; }
     }
 }
