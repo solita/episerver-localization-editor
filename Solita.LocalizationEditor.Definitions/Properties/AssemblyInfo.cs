@@ -6,11 +6,11 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("Solita.LocalizationEditor.Definitions")]
-[assembly: AssemblyDescription("Translation definitions for language editor")]
+[assembly: AssemblyDescription("Translation definitions for localization editor")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Solita Oy")]
 [assembly: AssemblyProduct("Solita.LocalizationEditor.Definitions")]
-[assembly: AssemblyCopyright("Copyright ©  2012")]
+[assembly: AssemblyCopyright("Copyright © Solita Oy")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
