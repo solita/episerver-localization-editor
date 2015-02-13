@@ -1,40 +1,40 @@
-﻿.language-editor {
+﻿.localization-editor {
     margin: 10px;
 }
 
-    .language-editor td {
+    .localization-editor td {
         padding: 0 5px;
         white-space: nowrap;
     }
 
-    .language-editor th {
+    .localization-editor th {
         text-align: center;
     }
 
-    .language-editor table {
+    .localization-editor table {
         margin-bottom: 2em;
     }
 
-.language-editor .heading-row {
+.localization-editor .heading-row {
     padding-top: 1em;
 }
 
-.language-editor .value-modified {
+.localization-editor .value-modified {
     background-color: lightgoldenrodyellow;
 }
 
-.language-editor .value-new {
+.localization-editor .value-new {
     background-color: lightgreen;
 }
 
-.language-editor .translations-row input[type=text] {
+.localization-editor .translations-row input[type=text] {
     width: 200px;
 }
 
-.language-editor .hidden {
+.localization-editor .hidden {
     display: none;
 }
 
-.language-editor .image-button {
+.localization-editor .image-button {
     padding: 1px;
 }

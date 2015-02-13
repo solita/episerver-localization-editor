@@ -76,7 +76,7 @@ var languageditor = (function() {
 
         $(".version-revert").click(function() {
             var version = $(this).siblings(".version-selector:first").val();
-            var url = $(".language-editor").data("localizations-url") + '?version=' + version;
+            var url = $(".localization-editor").data("localizations-url") + '?version=' + version;
 
             $.ajax({
                 url: url,
