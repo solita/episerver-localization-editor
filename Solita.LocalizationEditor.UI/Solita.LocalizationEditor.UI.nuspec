@@ -12,9 +12,9 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>$description$</description>
     <!--<releaseNotes>Summary of changes made in this release of the package.</releaseNotes>-->
-    <!--<copyright>Copyright 2012</copyright>-->
+    <!--<copyright>Copyright Solita Oy</copyright>-->
     <dependencies>
-      <dependency id="Solita.LocalizationEditor.Definitions" version="1.4.0.0" />
+      <dependency id="Solita.LocalizationEditor.Definitions" version="1.0.0.0" />
       <dependency id="Episerver.CMS.Core" version="7.6.0" />
     </dependencies>
   </metadata>
