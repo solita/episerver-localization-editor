@@ -9,7 +9,7 @@ namespace Solita.LocalizationEditor.Definitions
         public int Order { get; private set; }
 
         /// <summary>
-        /// Prefix applied to keys of all definitions. Starting and trailing slash are optional.
+        /// Prefix applied to keys of all definitions. Trailing slash is optional.
         /// </summary>
         public string KeyPrefix { get; set; }
 
