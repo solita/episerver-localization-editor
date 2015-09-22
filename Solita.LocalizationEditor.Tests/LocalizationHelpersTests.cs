@@ -15,13 +15,14 @@ namespace Solita.LocalizationEditor.Tests
         public void GetLocalizationDefinitions()
         {
             
+            // Gets definitions from TestLocalizationCategory
             var result = LocalizationHelpers.GetLocalizationDefinitions();
 
             Assert.IsNotNull(result, "result");
             Assert.AreEqual(2, result.Count, "Number of localization definitions");
 
             var first = result[0];
-            Assert.AreEqual("First", first.Description, "first.Description");
+            Assert.AreEqual("First test value", first.Description, "first.Description");
             Assert.AreEqual("First", first.DefaultValue, "first.DefaultValue");
             Assert.AreEqual("Test", first.Category, "first.Category");
             Assert.AreEqual("/test/first", first.Key, "first.Key");

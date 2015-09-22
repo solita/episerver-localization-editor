@@ -3,11 +3,14 @@
 namespace Solita.LocalizationEditor.Tests.TestData 
 {
 
+    /// <summary>
+    /// Localization category test
+    /// </summary>
     [LocalizationCategory("Test", 1)]
     public class TestLocalizationCategory 
     {
 
-        [Localization(Description = "First", DefaultValue = "First")]
+        [Localization(Description = "First test value", DefaultValue = "First")]
         public const string First = "/test/first";
 
         [Localization(Description = "Second", DefaultValue = "Second")]
