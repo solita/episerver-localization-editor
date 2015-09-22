@@ -13,7 +13,7 @@ namespace Solita.LocalizationEditor.Definitions
                  from field in LocalizationAttributeHelpers.FindLocalizationFields(categoryType)
                  let attribute = LocalizationAttributeHelpers.GetLocalizationAttribute(field)
                  let key = (string)field.GetValue(null)
-                 select new LocalizationDefinition(key, attribute.Description, categoryAttribute.Name, attribute.DefaultValue))
+                 select new LocalizationDefinition(key, attribute.Description, categoryAttribute.Name, attribute.DefaultValue, categoryAttribute.KeyPrefix))
                     .ToList();
         }
     }

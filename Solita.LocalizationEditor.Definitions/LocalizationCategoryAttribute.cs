@@ -8,10 +8,16 @@ namespace Solita.LocalizationEditor.Definitions
         public string Name { get;  private set; }
         public int Order { get; private set; }
 
-        public LocalizationCategoryAttribute(string name, int order)
+        /// <summary>
+        /// Prefix applied to keys of all definitions. Starting and trailing slash are optional.
+        /// </summary>
+        public string KeyPrefix { get; set; }
+
+        public LocalizationCategoryAttribute(string name, int order, string keyPrefix = null)
         {
             Name = name;
             Order = order;
+            KeyPrefix = keyPrefix;
         }
     }
 }

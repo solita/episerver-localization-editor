@@ -52,6 +52,7 @@
   <ItemGroup>
     <Compile Include="LocalizationHelpersTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TestData\LocalizationCategoryWithPrefix.cs" />
     <Compile Include="TestData\TestLocalizationCategory.cs" />
   </ItemGroup>
   <ItemGroup>
