@@ -32,6 +32,11 @@ Käännöksen hakeminen käyttöliittymässä(*.cshtml)
 
 ![Image of Yaktocat](documentationResources/exampleproj.png)
 
+## Ominaisuudet
+- Lokalisointien muokkaus
+- Lokalisointien exportoiminen .csv tiedostoksi
+- Lokalisointien importointi .csv formaatista
+- Oletus arvojen asettaminen käännöksille
 
 ## Toimintamalli:
 - Ladataan kaikki käännöskategoriat ja käännössanat App domainiin ladatuista assemblyista, kuten esimerkissä
