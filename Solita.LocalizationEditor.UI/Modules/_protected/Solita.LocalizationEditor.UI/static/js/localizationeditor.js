@@ -81,17 +81,6 @@ var localizationsRepo = (function () {
         });
     };
 
-    mod.getLocalizationsJsonFromXml = function (xmlString) {
-        var url = $(".localization-editor").data("localizations-transform-url");
-        return mod.ajaxCall(
-        {
-            url: url,
-            type: 'POST',
-            data: xmlString,
-            dataType: 'json'
-        });
-    };
-
     return mod;
 }());
 

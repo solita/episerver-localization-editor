@@ -34,7 +34,7 @@
         <div id="epi-globalDocument">
             @Html.Raw(Html.GlobalMenu())
 
-            <div class="localization-editor" data-localizations-url="@Url.Action("GetJsonLocalizations")" data-localizations-transform-url="@Url.Action("TransformLocalizationXmlToJsonLocazlitaions")">
+            <div class="localization-editor" data-localizations-url="@Url.Action("GetJsonLocalizations")">
 
                 @using (Html.BeginForm(new { Action = "Save" }))
                 {
