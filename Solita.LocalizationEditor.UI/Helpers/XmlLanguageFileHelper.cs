@@ -21,9 +21,9 @@ namespace Solita.LocalizationEditor.UI.Helpers
         {
             get
             {
-                if(_xmlDoc == null) { throw new InvalidOperationException("member _xmlDoc is null.");}
+                if (_xmlDoc == null) { throw new InvalidOperationException("member _xmlDoc is null."); }
                 return _xmlDoc;
-            } 
+            }
         }
 
         public XmlLanguageFileHelper()
@@ -70,74 +70,6 @@ namespace Solita.LocalizationEditor.UI.Helpers
                 attribute.InnerText = CultureInfo.GetCultureInfo(id).NativeName;
                 node.Attributes.Append(attribute);
             }
-        }
-
-        public void AddLanguageNames(XmlDocument xmlDoc)
-        {
-            var nodes = xmlDoc.SelectNodes(LanguageXPath);
-            if (nodes == null) { return; }
-
-            foreach (XmlNode node in nodes)
-            {
-                var id = node.Attributes["id"].InnerText;
-                var attribute = xmlDoc.CreateAttribute("name");
-                attribute.InnerText = CultureInfo.GetCultureInfo(id).NativeName;
-                node.Attributes.Append(attribute);
-            }
-        }
-
-        public string[] GetTranslationKeys(XDocument xDoc)
-        {
-            var langElements = xDoc.Elements("languages").Elements("language");
-            var keys =
-                (langElements.SelectMany(lang => lang.Elements(), (lang, category) => new { lang, category })
-                    .SelectMany(@t => @t.category.Elements(),
-                        (@t, translation) => $"/{@t.category.Name}/{translation.Name.ToString()}")
-                    ).Distinct().ToArray();
-
-            return keys;
-        }
-
-        public List<LocalizationResult> TransformXmlToTranslationsList(XDocument xDoc)
-        {
-            var keys = GetTranslationKeys(xDoc);
-            var localizations = new List<LocalizationResult>();
-            var languages = xDoc.Element("languages").Elements("language");
-            foreach (var lang in languages)
-            {
-                var id = lang.Attribute("id") != null ? lang.Attribute("id").Value : string.Empty;
-                if (string.IsNullOrEmpty(id)) { continue; }
-                foreach (var key in keys)
-                {
-                    var selector = $".{key}";
-                    var translationValue = lang.XPathSelectElement(selector);
-                    if (translationValue == null) { continue; }
-                    var existingLocalizationResult = localizations.SingleOrDefault(loc => loc.Key == key);
-                    var translation = new LocalizationResult.Translation(id, translationValue.Value);
-                    if (existingLocalizationResult != null)
-                    {
-                        existingLocalizationResult.Translations.Add(translation);
-                    }
-                    else
-                    {
-                        var localizationResult = new LocalizationResult()
-                        {
-                            Key = key,
-                            Translations = new List<LocalizationResult.Translation>() { translation }
-                        };
-                        localizations.Add(localizationResult);
-                    }
-                }
-            }
-
-            return localizations;
-        }
-
-        public static string GetKey(XElement translation)
-        {
-            var category = translation.Parent.Name;
-
-            return $"/{category}/{translation.Name}";
         }
     }
 }

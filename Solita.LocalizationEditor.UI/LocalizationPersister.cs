@@ -1,24 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
-using System.Web;
-using System.Web.Hosting;
 using System.Xml;
 using EPiServer.DataAbstraction;
-using EPiServer.Events.Clients;
 using EPiServer.ServiceLocation;
-using EPiServer.Web.Hosting;
 using Solita.LocalizationEditor.Definitions;
-using Solita.LocalizationEditor.UI.Common;
 using Solita.LocalizationEditor.UI.DAL;
 using Solita.LocalizationEditor.UI.Helpers;
 using Solita.LocalizationEditor.UI.Models;
-using System.Xml.Linq;
-using System.Xml.XPath;
-using Castle.Core.Internal;
 
 namespace Solita.LocalizationEditor.UI
 {
@@ -29,7 +17,7 @@ namespace Solita.LocalizationEditor.UI
 
         public LocalizationPersister(FileAccessStrategy accessStrategy)
         {
-            AccessStrategy = accessStrategy != null ? accessStrategy : new BlobFileAccessStrategy();
+            AccessStrategy = accessStrategy ?? new BlobFileAccessStrategy();
         }
 
         public virtual IList<string> GetEnabledLanguages()
@@ -79,7 +67,7 @@ namespace Solita.LocalizationEditor.UI
             var matchingDefinitions =
                     from definition in definitions
                     let translations = FindExistingTranslations(xml, languages, definition.Key)
-                    where translations.Count() > 0
+                    where translations.Any()
                     select new LocalizationResult
                     {
                         Key = definition.Key,
