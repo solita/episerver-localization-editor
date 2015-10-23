@@ -17,15 +17,15 @@ var domUpdateHelper = (function () {
         return $("td[data-lang='" + lang + "']").find(".translation-input");
     }
 
-    mod.setOriginalValue = function(translationInput) {
+    mod.setOriginalValue = function (translationInput) {
         $(translationInput).val(getOriginalValue(translationInput)).change();
     }
 
-    mod.setDefaultValue = function(translationInput) {
+    mod.setDefaultValue = function (translationInput) {
         $(translationInput).val(getDefaultValue(translationInput)).change();
     }
 
-    mod.setModifiedStatus = function(translationInput) {
+    mod.setModifiedStatus = function (translationInput) {
         translationInput.removeClass("value-modified");
         translationInput.removeClass("value-new");
         var originalValue = getOriginalValue(translationInput);
@@ -51,9 +51,9 @@ var domUpdateHelper = (function () {
             throw "argument null in updateLocalizationsDom";
         }
         var def = Q.defer();
-        Q.fcall(function() {
-            jsonLocalizations.forEach(function(localization) {
-                localization.Translations.forEach(function(translation) {
+        Q.fcall(function () {
+            jsonLocalizations.forEach(function (localization) {
+                localization.Translations.forEach(function (translation) {
                     mod.setInput(localization.Key, translation.Language, translation.Value);
                 });
             });
@@ -65,7 +65,7 @@ var domUpdateHelper = (function () {
     return mod;
 }());
 
-var localizationsRepo = (function() {
+var localizationsRepo = (function () {
     var mod = {};
 
     mod.ajaxCall = function (paramsObj) {
@@ -81,13 +81,13 @@ var localizationsRepo = (function() {
         });
     };
 
-    mod.getLocalizationsJsonFromXml = function(xmlString) {
+    mod.getLocalizationsJsonFromXml = function (xmlString) {
         var url = $(".localization-editor").data("localizations-transform-url");
         return mod.ajaxCall(
         {
             url: url,
             type: 'POST',
-            data:xmlString,
+            data: xmlString,
             dataType: 'json'
         });
     };
@@ -95,11 +95,11 @@ var localizationsRepo = (function() {
     return mod;
 }());
 
-var languageditor = (function () {    
+var languageditor = (function () {
     $(document).ready(function () {
         var domHelper = domUpdateHelper;
 
-        var setProgressLoaderVisible = function(visible) {
+        var setProgressLoaderVisible = function (visible) {
             var progressLoaderSelector = "#progress-loader";
             var loader = $(progressLoaderSelector);
             if (visible) {
@@ -115,22 +115,22 @@ var languageditor = (function () {
             var firstRowColumns = new Array();
             firstRowColumns.push("Key");
             firstRowColumns.push("Description");
-            $(".languages-row").find('[data-lang]').each(function() {
+            $(".languages-row").find('[data-lang]').each(function () {
                 var lang = $(this).data("lang");
                 firstRowColumns.push(lang);
             });
             rows.push(firstRowColumns.join("\t"));
 
-            $(".category-row").each(function() {
+            $(".category-row").each(function () {
                 var category = $(this).find(".category").text();
                 rows.push(category);
 
-                $(this).nextUntil(":not(.translations-row)").each(function() {
+                $(this).nextUntil(":not(.translations-row)").each(function () {
                     var columns = new Array();
                     columns.push($(this).data("key"));
                     columns.push($(this).data("description"));
 
-                    $(this).find('.translation-input').each(function() {
+                    $(this).find('.translation-input').each(function () {
                         columns.push($(this).val());
                     });
 
@@ -144,7 +144,7 @@ var languageditor = (function () {
             $(".csv-export-datalink")[0].click();
         });
 
-        $(".csv-import").click(function() {
+        $(".csv-import").click(function () {
             var fileupload = $(".csv-file-upload")[0];
 
             if (fileupload.files.length < 1) {
@@ -158,23 +158,20 @@ var languageditor = (function () {
             }
 
             var reader = new FileReader();
-            reader.onload = (function() {
-                return function(e) {
-                    Q.fcall(function() {
-                            setProgressLoaderVisible(true);
-                        })
-                    .then(function () {
-                        var xml = e.target.result;
-                        return localizationsRepo.getLocalizationsJsonFromXml(xml);
-                    })
-                    .then(function(localizations) {
-                            return domHelper.updateLocalizationsDom(localizations);
-                    })
-                    .finally(function() {
-                        setProgressLoaderVisible(false);
-                    })
-                    .catch(function(error) {
-                            alert("Error when importing: " + error.message);
+            reader.onload = (function () {
+                return function (e) {
+                    var rows = e.target.result.split(/[\r\n]/g);
+                    var languages = rows[0].split("\t").slice(2);
+                    var translationRows = rows.slice(1);
+
+                    translationRows.forEach(function (row) {
+                        var columns = row.split("\t");
+                        var key = columns[0];
+                        var translations = columns.slice(2);
+
+                        for (var k = 0; k < translations.length; k++) {
+                            domHelper.setInput(key, languages[k], translations[k]);
+                        }
                     });
                 };
             })(file);
@@ -182,55 +179,55 @@ var languageditor = (function () {
             reader.readAsText(file);
         });
 
-        $(".version-revert").click(function() {
+        $(".version-revert").click(function () {
             var version = $(this).siblings(".version-selector:first").val();
-            Q.fcall(function() {
+            Q.fcall(function () {
                 setProgressLoaderVisible(true);
-                })
-                .then(function() {
+            })
+                .then(function () {
                     return localizationsRepo.getLocalizationsForVersion(version);
                 })
-                .then(function(locazationsJson) {
+                .then(function (locazationsJson) {
                     return domHelper.updateLocalizationsDom(locazationsJson);
                 })
-                .finally(function() {
+                .finally(function () {
                     setProgressLoaderVisible(false);
                 })
-                .catch(function(error) {
+                .catch(function (error) {
                     alert("Error in reverting version: " + error.message);
                 });
         });
 
-        $(".undo-cell").click(function() {
+        $(".undo-cell").click(function () {
             var translationInput = $(this).siblings(".translation-input:first");
             domHelper.setOriginalValue(translationInput);
         });
 
-        $(".undo-all").click(function() {
-            $(".translation-input").each(function() {
+        $(".undo-all").click(function () {
+            $(".translation-input").each(function () {
                 domHelper.setOriginalValue($(this));
             });
         });
 
-        $(".defaults-cell").click(function() {
+        $(".defaults-cell").click(function () {
             var translationInput = $(this).siblings(".translation-input:first");
             domHelper.setDefaultValue(translationInput);
         });
 
-        $(".defaults-column").click(function() {
+        $(".defaults-column").click(function () {
             var lang = $(this).parent().data("lang");
             domHelper.getInputsByLanguage(lang).each(function () {
                 domHelper.setDefaultValue($(this));
             });
         });
 
-        $(".defaults-row").click(function() {
-            $(this).closest(".translations-row").find(".translation-input").each(function() {
+        $(".defaults-row").click(function () {
+            $(this).closest(".translations-row").find(".translation-input").each(function () {
                 domHelper.setDefaultValue($(this));
             });
         });
 
-        $(".translation-input").change(function() {
+        $(".translation-input").change(function () {
             domHelper.setModifiedStatus($(this));
         });
     });
