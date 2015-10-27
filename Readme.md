@@ -38,6 +38,12 @@ Käännöksen hakeminen käyttöliittymässä(*.cshtml)
 - Lokalisointien importointi .csv formaatista
 - Oletus arvojen asettaminen käännöksille
 
+## Migraatio epi 9 versioon
+- Exportataan lokalisoinnit csv tiedostoon(export napista).
+- Päivitetään LocalizationEditor nugetin kautta uuteen versioon.
+- Importataan lokalisoinnit csv tiedostosta.
+- Vaihtoehtoisesti lokalisoinnit voi importoida xml tiedostosta(käyttäen Import XML nappia)
+
 ## Toimintamalli:
 - Ladataan kaikki käännöskategoriat ja käännössanat App domainiin ladatuista assemblyista, kuten esimerkissä
     - Laajempi esimerkki käännökategorioiden rekisteröimisestä: **Solita.LocalizationEditor.TestEpiProject\Localizations.cs**
