@@ -63,7 +63,7 @@ namespace Solita.LocalizationEditor.UI.Controllers
         }
 
         [HttpPost]
-        public JsonResult TransformLocalizationXmlToJsonLocazlitaions()
+        public JsonResult TransformLocalizationXmlToJson()
         {
             using (var stream = HttpContext.Request.InputStream)
             {
