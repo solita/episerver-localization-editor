@@ -37,7 +37,7 @@ The localizations are retrieved in .cshtml files like this:
 - Import localizations from CSV/XML format
 - Set default values for localizations
 
-## Migration to epi 9 version
+## Migration from 1.0 -> 1.1
 - Export localizations to csv file(use the export button)
 - Update localizationEditor from nuget
 - Import localizations from the exported csv -> Save
