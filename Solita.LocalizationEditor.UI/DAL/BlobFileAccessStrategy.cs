@@ -106,14 +106,9 @@ namespace Solita.LocalizationEditor.UI.DAL
         public override void SaveXml(XmlDocument xml)
         {
             var blobFactory = ServiceLocator.Current.GetInstance<BlobFactory>();
-            var mediaDataResolver = ServiceLocator.Current.GetInstance<ContentMediaResolver>();
-            var contentTypeRepository = ServiceLocator.Current.GetInstance<IContentTypeRepository>();
-
             var file = ContentRepo.GetDefault<LocalizationFile>(LocalizationStorageReference);
             file.Name = LocalizationFileName;
-
             var blob = blobFactory.CreateBlob(file.BinaryDataContainer, ".xml");
-            var xmlBytes = Encoding.UTF8.GetBytes(xml.OuterXml);
             using (var blobStream = blob.OpenWrite())
             {
                 StreamWriter streamWriter = new StreamWriter(blobStream);
