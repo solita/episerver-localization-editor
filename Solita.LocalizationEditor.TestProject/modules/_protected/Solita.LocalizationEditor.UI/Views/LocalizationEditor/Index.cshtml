@@ -34,7 +34,7 @@
         <div id="epi-globalDocument">
             @Html.Raw(Html.GlobalMenu())
 
-            <div class="localization-editor" data-localizations-url="@Url.Action("GetJsonLocalizations")">
+            <div class="localization-editor" data-localizations-url="@Url.Action("GetJsonLocalizations")" data-localizations-transform-url="@Url.Action("TransformLocalizationXmlToJsonLocazlitaions")">
 
                 @using (Html.BeginForm(new {Action = "Save"}))
                 {
@@ -128,7 +128,7 @@
                         <strong>@Html.Translate("/LocalizationEditor/importexport")</strong>
                     </div>
                     <div class="import-export-row">
-                        <input type="file" class="csv-file-upload"/>
+                        <input type="file" class="file-upload"/>
                         <button type="button" class="csv-import image-button" title="@Html.Translate("/LocalizationEditor/import")">
                             Import CSV
                         </button>

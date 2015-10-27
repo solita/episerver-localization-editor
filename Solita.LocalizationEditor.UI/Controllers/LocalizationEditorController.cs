@@ -61,5 +61,19 @@ namespace Solita.LocalizationEditor.UI.Controllers
 
             return Json(localizations);
         }
+
+        [HttpPost]
+        public JsonResult TransformLocalizationXmlToJsonLocazlitaions()
+        {
+            using (var stream = HttpContext.Request.InputStream)
+            {
+                var xDoc = XDocument.Load(stream);
+                XmlLanguageFileHelper helpr = new XmlLanguageFileHelper();
+                var localizations = helpr.TransformXmlToTranslationsList(xDoc);
+
+                return Json(localizations);
+            }
+        }
+
     }
 }

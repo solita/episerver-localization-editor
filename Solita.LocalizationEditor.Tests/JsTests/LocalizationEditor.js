@@ -81,6 +81,19 @@ var localizationsRepo = (function () {
         });
     };
 
+    mod.getLocalizationsJsonFromXml = function (xmlString) {
+        var attrName = "localizations-transform-url";
+        var url = $(".localization-editor").data(attrName);
+        if (url === null || url === undefined || url === "") { throw "Could not get url from data attribute: " + attrName }
+        return mod.ajaxCall(
+        {
+            url: url,
+            type: 'POST',
+            data: xmlString,
+            dataType: 'json'
+        });
+    };
+
     return mod;
 }());
 
@@ -96,6 +109,33 @@ var languageditor = (function () {
             } else {
                 loader.hide();
             }
+        };
+
+        var getFileUpload = function () {
+            return $(".file-upload")[0];
+        }
+
+        var getResponseText = function (error) {
+            var errorPattern = /<h2>.*<i>.*<\/i>/;
+            var responseText = error.responseText;
+            if (responseText === "" || responseText === undefined) {
+                return error.statusText;
+            }
+            var match = error.responseText.match(errorPattern);
+            if (match.length === 0) {
+                return error.responseText;
+            }
+            var errorText = match[0];
+            var trimmedError = errorText.substring(errorText.indexOf("<i>") + 3);
+            trimmedError = trimmedError.substr(0, trimmedError.indexOf("</i>"));
+
+            return trimmedError;
+        };
+
+        var showImportError = function (error) {
+            var errorText = getResponseText(error)
+
+            alert(errorText);
         };
 
         $(".csv-export").click(function () {
@@ -126,15 +166,13 @@ var languageditor = (function () {
                     rows.push(columns.join("\t"));
                 });
             });
-
             // Base-64 encode with UTF-8 support using the method described here https://developer.mozilla.org/en-US/docs/DOM/window.btoa
             var output = btoa(unescape(encodeURIComponent(rows.join("\r\n"))));
             $(".csv-export-datalink").attr("href", 'data:text/plain;charset=UTF-8;base64,' + output);
             $(".csv-export-datalink")[0].click();
         });
-
         $(".csv-import").click(function () {
-            var fileupload = $(".csv-file-upload")[0];
+            var fileupload = getFileUpload();
 
             if (fileupload.files.length < 1) {
                 return;
@@ -149,18 +187,70 @@ var languageditor = (function () {
             var reader = new FileReader();
             reader.onload = (function () {
                 return function (e) {
-                    var rows = e.target.result.split(/[\r\n]/g);
-                    var languages = rows[0].split("\t").slice(2);
-                    var translationRows = rows.slice(1);
-
-                    translationRows.forEach(function (row) {
-                        var columns = row.split("\t");
-                        var key = columns[0];
-                        var translations = columns.slice(2);
-
-                        for (var k = 0; k < translations.length; k++) {
-                            domHelper.setInput(key, languages[k], translations[k]);
+                    Q.fcall(function () {
+                        setProgressLoaderVisible(true);
+                        var rows = e.target.result.split(/[\r\n]/g);
+                        var languages = rows[0].split("\t").slice(2);
+                        var translationRows = rows.slice(1);
+                        return {
+                            "rows": translationRows,
+                            "languages": languages
                         }
+                    })
+                        .then(function (csvData) {
+                            csvData.rows.forEach(function (row) {
+                                var columns = row.split("\t");
+                                var key = columns[0];
+                                var translations = columns.slice(2);
+
+                                for (var k = 0; k < translations.length; k++) {
+                                    domHelper.setInput(key, csvData.languages[k], translations[k]);
+                                }
+                            });
+                        })
+                        .finally(function () {
+                            setProgressLoaderVisible(false);
+                        })
+                        .catch(function (error) {
+                            showImportError(error);
+                        });
+                };
+            })(file);
+
+            reader.readAsText(file);
+        });
+
+        $(".xml-import").click(function () {
+            var fileupload = getFileUpload();
+
+            if (fileupload.files.length < 1) {
+                return;
+            }
+            var file = fileupload.files[0];
+
+            if (!file.type.match('text/plain')) {
+                alert("File needs to be a plain text file.");
+                return;
+            }
+
+            var reader = new FileReader();
+            reader.onload = (function () {
+                return function (e) {
+                    Q.fcall(function () {
+                        setProgressLoaderVisible(true);
+                    })
+                    .then(function () {
+                        var xml = e.target.result;
+                        return localizationsRepo.getLocalizationsJsonFromXml(xml);
+                    })
+                    .then(function (localizations) {
+                        return domHelper.updateLocalizationsDom(localizations);
+                    })
+                    .finally(function () {
+                        setProgressLoaderVisible(false);
+                    })
+                    .catch(function (error) {
+                        showImportError(error);
                     });
                 };
             })(file);
