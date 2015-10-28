@@ -142,8 +142,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="JsTests\index.html" />
-    <Content Include="JsTests\LocalizationEditor.Tests.js" />
     <Content Include="TestData\Localizations.xml" />
   </ItemGroup>
   <ItemGroup>
