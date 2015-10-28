@@ -13,6 +13,9 @@ using Solita.LocalizationEditor.UI.Models;
 using EPiServer.Web;
 using EPiServer.Logging.Compatibility;
 using System.Xml.Linq;
+using EPiServer.Security;
+using Solita.LocalizationEditor.UI.Common;
+using System;
 
 namespace Solita.LocalizationEditor.UI.DAL
 {
@@ -21,6 +24,7 @@ namespace Solita.LocalizationEditor.UI.DAL
         private const string LocalizationFileName = "Localizations.xml";
         private IContentRepository _contentRepository;
         private static readonly ILog Log = LogManager.GetLogger(typeof(BlobFileAccessStrategy));
+        private static ContentReference LocalizationsParent = ContentReference.RootPage;
 
         IContentRepository ContentRepo
         {
@@ -36,7 +40,13 @@ namespace Solita.LocalizationEditor.UI.DAL
 
         public ContentReference LocalizationStorageReference
         {
-            get { return SiteDefinition.Current.GlobalAssetsRoot; }
+            get
+            {
+                var assetsRoot = SiteDefinition.Current.GlobalAssetsRoot;
+                var contentFolder = MediaDataUtils.GetOrCreateFolder(assetsRoot, "Localizations");
+
+                return contentFolder.ContentLink;
+            }
         }
         public BlobFileAccessStrategy()
         {
@@ -59,10 +69,6 @@ namespace Solita.LocalizationEditor.UI.DAL
             var file = GetLocalizationFile();
 
             XmlDocument xmlDoc = new XmlDocument();
-            if (file == null)
-            {
-                return xmlDoc;
-            }
             xmlDoc = LoadBinaryDataToXml(file.BinaryData);
 
             return xmlDoc;
@@ -88,26 +94,24 @@ namespace Solita.LocalizationEditor.UI.DAL
         {
             var localizationFileType = typeof(LocalizationFile).Name;
 
-            var files = ContentRepo.GetChildren<MediaData>(LocalizationStorageReference)
-                        .Where(f => f.Name == LocalizationFileName &&
-                            f.GetType().Name == localizationFileType &&
-                            f.BinaryData != null) 
+            var file = GetLocalizationContentInstance();
+            var files = ContentRepo.GetChildren<LocalizationFile>(LocalizationStorageReference)
+                            .Where(f => f.BinaryData != null)
                             .OrderByDescending(f => f.Created);
             return files;
         }
 
         public MediaData GetLocalizationFile()
         {
-            var mediaData = GetLocalizationFiles().FirstOrDefault();
+            var file = GetLocalizationFiles().FirstOrDefault();
 
-            return mediaData ?? ContentRepo.GetDefault<LocalizationFile>(LocalizationStorageReference);
+            return file ?? ContentRepo.GetDefault<LocalizationFile>(LocalizationStorageReference);
         }
 
         public override void SaveXml(XmlDocument xml)
         {
             var blobFactory = ServiceLocator.Current.GetInstance<BlobFactory>();
-            var file = ContentRepo.GetDefault<LocalizationFile>(LocalizationStorageReference);
-            file.Name = LocalizationFileName;
+            var file = GetLocalizationContentInstance();
             var blob = blobFactory.CreateBlob(file.BinaryDataContainer, ".xml");
             using (var blobStream = blob.OpenWrite())
             {
@@ -118,6 +122,14 @@ namespace Solita.LocalizationEditor.UI.DAL
             }
             file.BinaryData = blob;
             ContentRepo.Save(file, SaveAction.Publish);
+        }
+
+        private LocalizationFile GetLocalizationContentInstance()
+        {
+            var file = ContentRepo.GetDefault<LocalizationFile>(LocalizationStorageReference);
+            file.Name = "Localizations";
+
+            return file;
         }
 
         private XmlDocument LoadBinaryDataToXml(Blob blob)

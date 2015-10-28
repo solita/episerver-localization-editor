@@ -180,7 +180,7 @@ var languageditor = (function () {
             var file = fileupload.files[0];
 
             if (!file.type.match('text/plain')) {
-                alert("File needs to be a XML file.");
+                alert("File needs to be a plain text file.");
                 return;
             }
 
@@ -229,7 +229,7 @@ var languageditor = (function () {
             var file = fileupload.files[0];
 
             if (!file.type.match('text/xml')) {
-                alert("File needs to be a plain text file.");
+                alert("File needs to be XML file.");
                 return;
             }
 

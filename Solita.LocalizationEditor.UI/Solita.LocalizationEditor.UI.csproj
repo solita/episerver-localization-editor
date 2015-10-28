@@ -62,6 +62,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Business\BlobLocalizationProviderInitiator.cs" />
+    <Compile Include="Common\MediaDataUtils.cs" />
     <Compile Include="Common\ModuleUtil.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="DAL\BlobFileAccessStrategy.cs" />

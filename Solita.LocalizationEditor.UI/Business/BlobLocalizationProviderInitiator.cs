@@ -18,20 +18,19 @@ namespace Solita.LocalizationEditor.UI.Business
 {
 
     [InitializableModule]
-    //[ModuleDependency(typeof(FrameworkInitialization))]
     [ModuleDependency(typeof(EPiServer.Web.InitializationModule))] 
     public class BlobLocalizationProviderInitiator : IInitializableModule
     {
         private const string ProviderName = "Translations";
         private static readonly ILog Log = LogManager.GetLogger(typeof(BlobLocalizationProviderInitiator));
-        private static bool initialized;
-        private ProviderBasedLocalizationService localizationService;
+        private static bool _initialized;
+        private ProviderBasedLocalizationService _localizationService;
 
         private ProviderBasedLocalizationService LocalizationService
         {
             get
             {
-                return this.localizationService ?? (this.localizationService = GetLocalizationService());
+                return this._localizationService ?? (this._localizationService = GetLocalizationService());
             }
         }
 
@@ -54,8 +53,8 @@ namespace Solita.LocalizationEditor.UI.Business
                 return;
             }
 
-            // If already initialized, no need to do it again.
-            if (initialized)
+            // If already _initialized, no need to do it again.
+            if (_initialized)
             {
                 return;
             }
@@ -63,9 +62,9 @@ namespace Solita.LocalizationEditor.UI.Business
             Log.Info("[LocalizationResult] Initializing translation provider.");
             // Initialize the provider after the initialization is complete, else the StartPage cannot be found.
             context.InitComplete += this.InitComplete;
-            initialized = true;
+            _initialized = true;
 
-            Log.Info("[LocalizationResult] Translation provider initialized.");
+            Log.Info("[LocalizationResult] Translation provider _initialized.");
         }
 
         public void Preload(string[] parameters)
@@ -102,7 +101,7 @@ namespace Solita.LocalizationEditor.UI.Business
             }
 
             // If already uninitialized, no need to do it again.
-            if (!initialized)
+            if (!_initialized)
             {
                 return;
             }
@@ -110,13 +109,13 @@ namespace Solita.LocalizationEditor.UI.Business
             Log.Info("[LocalizationResult] Uninitializing translation provider.");
 
             var translationProvider = this.GetTranslationProvider();
-            initialized = this.UnLoadProvider(translationProvider);
+            _initialized = this.UnLoadProvider(translationProvider);
             Log.Info("[LocalizationResult] Translation provider uninitialized.");
         }
 
         internal void InitComplete(object sender, EventArgs e)
         {
-            initialized = this.LoadProvider();
+            _initialized = this.LoadProvider();
         }
 
         private static ProviderBasedLocalizationService GetLocalizationService()
@@ -154,7 +153,7 @@ namespace Solita.LocalizationEditor.UI.Business
                 return null;
             }
 
-            // Gets any provider that has the same name as the one initialized.
+            // Gets any provider that has the same name as the one _initialized.
             LocalizationProvider localizationProvider =
                 this.LocalizationService.Providers.FirstOrDefault(
                     p => p.Name.Equals(ProviderName, StringComparison.Ordinal));
@@ -198,7 +197,7 @@ namespace Solita.LocalizationEditor.UI.Business
         ///     Uns the load provider.
         /// </summary>
         /// <returns>
-        ///     [false] if the provider has been unloaded, as it's not initialized anymore.
+        ///     [false] if the provider has been unloaded, as it's not _initialized anymore.
         /// </returns>
         private bool UnLoadProvider(LocalizationProvider localizationProvider)
         {
