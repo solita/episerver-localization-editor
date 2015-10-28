@@ -130,15 +130,15 @@
                     <div class="import-export-row">
                         <input type="file" class="file-upload"/>
                         <button type="button" class="csv-import image-button" title="@Html.Translate("/LocalizationEditor/import")">
-                            Import CSV
+                            @Html.Translate("/LocalizationEditor/importcsv")
                         </button>
                         <button type="button" class="xml-import image-button" title="@Html.Translate("/LocalizationEditor/import")">
-                            Import XML
+                            @Html.Translate("/LocalizationEditor/importxml")
                         </button>
                     </div>
                     <div class="import-export-row button-row">
                         <button type="button" class="csv-export image-button" title="@Html.Translate("/LocalizationEditor/export")">
-                            Export To CSV
+                            @Html.Translate("/LocalizationEditor/exportcsv")
                         </button>
                         <a class="hidden csv-export-datalink" download="translations.txt"></a>
                     </div>
