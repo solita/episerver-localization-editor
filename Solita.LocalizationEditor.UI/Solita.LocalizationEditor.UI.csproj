@@ -66,11 +66,13 @@
     <Compile Include="Common\ModuleUtil.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="DAL\BlobFileAccessStrategy.cs" />
+    <Compile Include="DAL\ContentAccessStrategy.cs" />
     <Compile Include="DAL\FileAccessStrategy.cs" />
     <Compile Include="DAL\XmlFileAccessStrategy.cs" />
     <Compile Include="Helpers\ConfigurationHelper.cs" />
     <Compile Include="Helpers\XmlLanguageFileHelper.cs" />
     <Compile Include="Lang\CmsMenuTitleProvider.cs" />
+    <Compile Include="LocalizationContentProvider.cs" />
     <Compile Include="LocalizationsUpdatedEventHandler.cs" />
     <Compile Include="Models\CategoryList.cs" />
     <Compile Include="Models\LocalizationEditorViewModel.cs" />
@@ -80,6 +82,7 @@
     <Compile Include="Common\Settings.cs" />
     <Compile Include="Common\XmlDocumentExtensions.cs" />
     <Compile Include="Models\LocalizationFile.cs" />
+    <Compile Include="Models\LocalizationXml.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Models\XmlVersionInfo.cs" />
     <Compile Include="Services\BlobLocalizationService.cs" />

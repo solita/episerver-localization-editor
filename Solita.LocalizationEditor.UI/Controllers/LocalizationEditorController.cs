@@ -21,7 +21,7 @@ namespace Solita.LocalizationEditor.UI.Controllers
 
         public LocalizationEditorController()
         {
-            _persister = new LocalizationPersister(new BlobFileAccessStrategy());
+            _persister = new LocalizationPersister(new ContentAccessStrategy());
         }
 
         [MenuItem("/global/cms/localizations", TextResourceKey = "CmsMenuTitle", ResourceType = typeof(CmsMenuTitleProvider))]

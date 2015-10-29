@@ -12,6 +12,7 @@ using EPiServer.ServiceLocation;
 using EPiServer.Web.Hosting;
 using Solita.LocalizationEditor.UI.Common;
 using log4net;
+using System.Collections.Specialized;
 
 namespace Solita.LocalizationEditor.UI
 {
@@ -41,33 +42,16 @@ namespace Solita.LocalizationEditor.UI
         {
             try
             {
-                var langFolderVirtualPath = Settings.AutoPopulated.LangFolderVirtualPath;
-                if (string.IsNullOrEmpty(langFolderVirtualPath))
-                {
-                    Log.Error("LangFolderVirtualPath undefined.");
-                    return;
-                }
+                var localizationContentProvider = new LocalizationContentProvider();
+                localizationContentProvider.Initialize(ProviderName, new NameValueCollection());
 
-                // Due to what is likely bug in Episerver, there needs to be a physical path with the same
-                // name as the virtual path, or else GetInitializedProvider fails since it can't listen to changes in a network folder.
-                var physicalDirectory = HostingEnvironment.MapPath(langFolderVirtualPath);
-                if (!Directory.Exists(physicalDirectory))
-                {
-                    Directory.CreateDirectory(physicalDirectory);
-                }
-
-                //a VPP with the path below must be registered in the sites configuration.
-                var localizationProviderInitializer = new VirtualPathXmlLocalizationProviderInitializer(GenericHostingEnvironment.VirtualPathProvider);
-                var localizationProvider = localizationProviderInitializer.GetInitializedProvider(langFolderVirtualPath, ProviderName);
-
-                //Inserts the provider first in the provider list so that it is prioritized over default providers.
-                service.Providers.Insert(0, localizationProvider);
+                service.Providers.Insert(0, localizationContentProvider);
 
                 Log.Debug("LocalizationProvider added");
             }
-            catch(Exception e)
+            catch (Exception e)
             {
-                Log.Error("Failed to add custom localization provider." , e);
+                Log.Error("Failed to add custom localization provider.", e);
             }
         }
 
