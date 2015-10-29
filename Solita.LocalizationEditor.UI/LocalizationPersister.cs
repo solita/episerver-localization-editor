@@ -17,7 +17,7 @@ namespace Solita.LocalizationEditor.UI
 
         public LocalizationPersister(FileAccessStrategy accessStrategy)
         {
-            AccessStrategy = accessStrategy ?? new BlobFileAccessStrategy();
+            AccessStrategy = accessStrategy ?? new ContentAccessStrategy();
         }
 
         public virtual IList<string> GetEnabledLanguages()

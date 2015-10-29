@@ -2,7 +2,6 @@
 using EPiServer.Events.Clients;
 using System;
 using log4net;
-using Solita.LocalizationEditor.UI.Business;
 
 namespace Solita.LocalizationEditor.UI
 {
@@ -26,8 +25,6 @@ namespace Solita.LocalizationEditor.UI
 
             // reload provider to retrieve latest localizations
             LocalizationProviderInitiator.ReInitProvider();
-            BlobLocalizationProviderInitiator blobProviderInitiator = new BlobLocalizationProviderInitiator();
-            blobProviderInitiator.ReInitProvider();
         }
     }
 }
