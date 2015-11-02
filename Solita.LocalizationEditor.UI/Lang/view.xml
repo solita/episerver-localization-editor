@@ -14,6 +14,9 @@
       <export>Export</export>
       <importexport>Import / export (requires latest FF/Chrome/Safari)</importexport>
       <reverttoolderversion>Revert to older version</reverttoolderversion>
+      <exportcsv>Export CSV</exportcsv>
+      <importxml>Import XML</importxml>
+      <importcsv>Import CSV</importcsv>
     </LocalizationEditor>
   </language>
   
@@ -30,6 +33,9 @@
       <export>Vie</export>
       <importexport>Tuo / vie</importexport>
       <reverttoolderversion>Palauta vanha versio (vaatii uusimman Firefox/Chrome/Safari)</reverttoolderversion>
+      <exportcsv>Exportoi CSV</exportcsv>
+      <importxml>Importoi XML</importxml>
+      <importcsv>Importoi CSV</importcsv>
     </LocalizationEditor>
   </language>
   
