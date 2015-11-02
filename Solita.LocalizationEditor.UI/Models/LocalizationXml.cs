@@ -3,9 +3,6 @@ using EPiServer.DataAnnotations;
 using EPiServer.Framework.Blobs;
 using EPiServer.Framework.DataAnnotations;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 
 namespace Solita.LocalizationEditor.UI.Models
 {

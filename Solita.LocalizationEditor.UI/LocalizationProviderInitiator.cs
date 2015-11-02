@@ -1,16 +1,10 @@
 ﻿using System;
-using System.IO;
 using System.Linq;
-using System.Web;
-using System.Web.Hosting;
 using EPiServer.Events.Clients;
 using EPiServer.Framework;
 using EPiServer.Framework.Initialization;
 using EPiServer.Framework.Localization;
-using EPiServer.Framework.Localization.XmlResources;
 using EPiServer.ServiceLocation;
-using EPiServer.Web.Hosting;
-using Solita.LocalizationEditor.UI.Common;
 using log4net;
 using System.Collections.Specialized;
 

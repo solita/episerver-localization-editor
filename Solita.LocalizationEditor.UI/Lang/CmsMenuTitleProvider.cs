@@ -1,5 +1,4 @@
 ﻿using System.Globalization;
-using System.Resources;
 using System.Threading;
 using EPiServer.Framework.Localization;
 using EPiServer.ServiceLocation;

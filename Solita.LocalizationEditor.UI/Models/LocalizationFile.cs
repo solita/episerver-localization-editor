@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using EPiServer.Core;
+﻿using EPiServer.Core;
 using EPiServer.DataAnnotations;
 
 namespace Solita.LocalizationEditor.UI.Models

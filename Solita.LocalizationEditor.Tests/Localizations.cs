@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Solita.LocalizationEditor.Definitions;
-using Solita.LocalizationEditor.UI.Common;
+﻿using Solita.LocalizationEditor.Definitions;
 
 namespace Solita.LocalizationEditor.Tests
 {

@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Xml;
 using Solita.LocalizationEditor.UI.Models;
 using EPiServer.ServiceLocation;

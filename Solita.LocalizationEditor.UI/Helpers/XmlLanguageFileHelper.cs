@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Web;
 using System.Xml;
 using Solita.LocalizationEditor.UI.Common;
 using System.Xml.Linq;

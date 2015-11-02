@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Xml;
-using EPiServer.Framework.Blobs;
 using Solita.LocalizationEditor.UI.Models;
 
 namespace Solita.LocalizationEditor.UI.DAL
