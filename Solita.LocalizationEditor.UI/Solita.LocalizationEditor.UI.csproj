@@ -61,9 +61,7 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Common\MediaDataUtils.cs" />
     <Compile Include="Common\ModuleUtil.cs" />
-    <Compile Include="Constants.cs" />
     <Compile Include="DAL\ContentAccessStrategy.cs" />
     <Compile Include="DAL\FileAccessStrategy.cs" />
     <Compile Include="DAL\XmlFileAccessStrategy.cs" />
