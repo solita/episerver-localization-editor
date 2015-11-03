@@ -282,7 +282,6 @@
     <Content Include="modules\_protected\Solita.LocalizationEditor.UI\module.config" />
     <Content Include="modules\_protected\Solita.LocalizationEditor.UI\Views\LocalizationEditor\Index.cshtml" />
     <Content Include="modules\_protected\Solita.LocalizationEditor.UI\Views\Web.config" />
-    <None Include="Properties\PublishProfiles\DevDeploy.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
