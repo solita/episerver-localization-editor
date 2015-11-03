@@ -350,17 +350,9 @@
     <Copy SourceFiles="@(BinFile)" DestinationFolder="$(BinTargetDir)" />
     <Copy SourceFiles="@(NonBinFiles)" DestinationFolder="$(NonBinFilesTargetDir)\%(RecursiveDir)" />
   </Target>
-  <Target Name="CopyJavaScriptsToTestProject">
-    <Message Text="Copying LocalizationEditor javascript to test project..." />
-    <PropertyGroup>
-      <LocalizationEditorJavascript>$(MSBuildProjectDirectory)\Modules\_protected\Solita.LocalizationEditor.UI\static\js\LocalizationEditor.js</LocalizationEditorJavascript>
-      <TestProjectJavascripts>$(SolutionDir)\Solita.LocalizationEditor.Tests\JsTests\</TestProjectJavascripts>
-    </PropertyGroup>
-    <Copy SourceFiles="$(LocalizationEditorJavascript)" DestinationFolder="$(TestProjectJavascripts)" />
-  </Target>
   <Target Name="DeployLocalizationEditorToTestProject" Condition="'$(Configuration)|$(Platform)' == 'DevDeploy|AnyCPU'" AfterTargets="Build;Rebuild">
     <Message Text="Executing Target DevDeploy" />
     <MSBuild Projects="$(MSBuildProjectDirectory)\$(MSBuildProjectFile)" Targets="Package" />
-    <CallTarget Targets="CopyLocalizationEditorFilesToTestProject;CopyJavaScriptsToTestProject" />
+    <CallTarget Targets="CopyLocalizationEditorFilesToTestProject" />
   </Target>
 </Project>
