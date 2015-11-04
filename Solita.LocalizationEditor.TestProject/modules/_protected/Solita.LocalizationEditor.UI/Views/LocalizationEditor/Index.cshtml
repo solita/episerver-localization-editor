@@ -105,45 +105,44 @@
                     <div id="progress-loader">
                         <img src="@ModuleUtil.PathTo("/static/img/ajax-loader.gif")"/>
                     </div>
-                    <table>
-                        <tr><td class="heading-row"><strong>@Html.Translate("/LocalizationEditor/reverttoolderversion")</strong></td></tr>
-                        <tr class="version-revert-row">
-                            <td>
-                                <select class="version-selector">
-                                    @foreach (var version in Model.Versions)
-                                    {
-                                        <option value="@version.Id">@version.Name - @version.Created.ToShortDateString() @version.Created.ToShortTimeString() - @version.CreatedBy</option>
-                                    }
-                                </select>
-                                <button type="button" class="version-revert image-button" title="@Html.Translate("/LocalizationEditor/reverttoolderversion")">
-                                    <img src="@ModuleUtil.PathTo("/static/img/arrow_up.png")" alt="@Html.Translate("/LocalizationEditor/reverttoolderversion")"/>
-                                </button>
-                            </td>
-                        </tr>
-                    </table>
+
+                    <div class="heading-row">
+                        <strong>@Html.Translate("/LocalizationEditor/reverttoolderversion")</strong>
+                    </div>
+                    <div class="button-row">
+                        <select class="version-selector">
+                            @foreach (var version in Model.Versions)
+                            {
+                                <option value="@version.Id">@version.Name - @version.Created.ToShortDateString() @version.Created.ToShortTimeString() - @version.CreatedBy</option>
+                            }
+                        </select>
+                        <button type="button" class="version-revert image-button" title="@Html.Translate("/LocalizationEditor/reverttoolderversion")">
+                            <img src="@ModuleUtil.PathTo("/static/img/arrow_up.png")" alt="@Html.Translate("/LocalizationEditor/reverttoolderversion")" />
+                        </button>
+                    </div>
                     
                 if (Model.PowertoolsMode) { 
 
                     <div class="heading-row">
                         <strong>@Html.Translate("/LocalizationEditor/importexport")</strong>
                     </div>
-                    <div class="import-export-row button-row">
+                    <div class="button-row">
                         <input type="file" class="file-upload"/>
-                        <button type="button" class="csv-import image-button" title="@Html.Translate("/LocalizationEditor/import")">
+                        <button type="button" class="csv-import" title="@Html.Translate("/LocalizationEditor/import")">
                             @Html.Translate("/LocalizationEditor/importcsv")
                         </button>
-                        <button type="button" class="xml-import image-button" title="@Html.Translate("/LocalizationEditor/import")">
+                        <button type="button" class="xml-import" title="@Html.Translate("/LocalizationEditor/import")">
                             @Html.Translate("/LocalizationEditor/importxml")
                         </button>
                     </div>
-                    <div class="import-export-row button-row">
-                        <button type="button" class="csv-export image-button" title="@Html.Translate("/LocalizationEditor/export")">
+                    <div class="button-row">
+                        <button type="button" class="csv-export" title="@Html.Translate("/LocalizationEditor/export")">
                             @Html.Translate("/LocalizationEditor/exportcsv")
                         </button>
                         <a class="hidden csv-export-datalink" download="translations.txt"></a>
                     </div>
 
-                    <div class="button-row submit">
+                    <div class="button-row submit-row">
                         <button type="button" class="undo-all">@Html.Translate("/LocalizationEditor/undoall")</button>
                         <button type="submit">@Html.Translate("/LocalizationEditor/save")</button>
                     </div>

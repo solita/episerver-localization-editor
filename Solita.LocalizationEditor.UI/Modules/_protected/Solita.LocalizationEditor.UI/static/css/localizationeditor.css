@@ -44,11 +44,9 @@
 }
 
 .localization-editor .button-row {
-    float: left;
-    clear: left;
     margin-top: 7px;
 }
 
-.submit {
-    margin-top: 4px;
+.localization-editor .submit-row {
+    margin-top: 2em;
 }
