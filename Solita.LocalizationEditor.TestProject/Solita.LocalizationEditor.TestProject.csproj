@@ -174,6 +174,9 @@
       <HintPath>..\packages\structuremap-signed.3.1.6.186\lib\net40\StructureMap.Net4.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="StructureMap.Web">
+      <HintPath>..\packages\structuremap.web-signed.3.1.6.186\lib\net40\StructureMap.Web.dll</HintPath>
+    </Reference>
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
